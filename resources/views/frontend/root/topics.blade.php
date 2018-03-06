@@ -141,21 +141,21 @@
                                 <button type="button" class="btn get-comments" data-type="all">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments" checked="checked"> 全部评论
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" checked="checked"> 全部评论
                                         </label>
                                     </div>
                                 </button>
                                 <button type="button" class="btn get-comments" data-type="positive">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments" value="1"> 只看正方
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" value="1"> 只看正方
                                         </label>
                                     </div>
                                 </button>
                                 <button type="button" class="btn get-comments" data-type="negative">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments" value="2"> 只看反方
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" value="2"> 只看反方
                                         </label>
                                     </div>
                                 </button>
