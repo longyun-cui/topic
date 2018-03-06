@@ -4,7 +4,7 @@
             @if($comment->is_anonymous == 1)
             <a href="javascript:void(0)">匿名评论</a>
             @else
-                <a href="{{url('/u/')}}">{{$comment->user->name}}</a>
+                <a href="{{url('/u/'.encode($comment->user->id))}}">{{$comment->user->name}}</a>
             @endif
             @if($comment->type == 1) <b class="text-primary">【正方 <i class="fa fa-thumbs-o-up"></i>】</b>
             @elseif($comment->type == 2) <b class="text-danger">【反方 <i class="fa fa-thumbs-o-up"></i>】</b>
