@@ -109,10 +109,12 @@ class RootRepository {
     public function topic_comment_save($post_data)
     {
         $messages = [
+            'type.required' => '参数有误',
             'topic_id.required' => '参数有误',
             'content.required' => '内容不能为空',
         ];
         $v = Validator::make($post_data, [
+            'type' => 'required',
             'topic_id' => 'required',
             'content' => 'required'
         ], $messages);
@@ -129,7 +131,8 @@ class RootRepository {
             if(!$topic_decode) return response_error([],"该话题不存在，刷新一下试试！");
 
             $user = Auth::user();
-            $insert['type'] = empty($post_data['type']) ? 0 : $post_data['type'];
+            $insert['type'] = $post_data['type'];
+            $insert['support'] = empty($post_data['support']) ? 0 : $post_data['support'];
             $insert['user_id'] = $user->id;
             $insert['topic_id'] = $topic_decode;
             $insert['content'] = $post_data['content'];
@@ -173,8 +176,8 @@ class RootRepository {
 
         $type = $post_data['type'];
         $comments = Communication::with(['user'])->where('topic_id',$topic_decode);
-        if($type == "positive") $comments->where('type',1);
-        else if($type == "negative") $comments->where('type',2);
+        if($type == "positive") $comments->where('support',1);
+        else if($type == "negative") $comments->where('support',2);
         $comments = $comments->orderBy('id','desc')->paginate(10);
         $html["html"] = view('frontend.component.comments')->with("comments",$comments)->__toString();
 

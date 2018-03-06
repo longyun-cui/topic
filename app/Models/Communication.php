@@ -7,8 +7,8 @@ class Communication extends Model
     //
     protected $table = "communications";
     protected $fillable = [
-        'sort', 'type', 'active', 'user_id', 'topic_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order', 'title', 'content',
-        'is_shared', 'visit_num', 'share_num'
+        'sort', 'type', 'active', 'support', 'user_id', 'topic_id', 'is_anonymous', 'reply_id', 'dialog_id', 'order', 'title', 'content',
+        'is_shared', 'favor_num', 'comment_num'
     ];
     protected $dateFormat = 'U';
 

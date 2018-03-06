@@ -135,7 +135,7 @@ class TopicRepository {
                 if(!empty($post_data["cover"]))
                 {
                     $upload = new CommonRepository();
-                    $result = $upload->upload($post_data["cover"], 'unique-cover-peoples' , 'cover_people_'.$encode_id);
+                    $result = $upload->upload($post_data["cover"], 'unique-cover-topics' , 'cover_topic_'.$encode_id);
                     if($result["status"])
                     {
                         $topic->cover_pic = $result["data"];

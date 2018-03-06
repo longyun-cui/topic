@@ -77,6 +77,7 @@
 
                         {{csrf_field()}}
                         <input type="hidden" name="topic_id" value="{{encode($data->id)}}" readonly>
+                        <input type="hidden" name="type" value="1" readonly>
 
                         <div class="form-group">
                             <div class="col-md-12">
@@ -91,21 +92,21 @@
                                     <button type="button" class="btn">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="type" value="0" checked="checked"> 只评论
+                                                <input type="radio" name="support" value="0" checked="checked"> 只评论
                                             </label>
                                         </div>
                                     </button>
                                     <button type="button" class="btn">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="type" value="1"> 支持正方
+                                                <input type="radio" name="support" value="1"> 支持正方
                                             </label>
                                         </div>
                                     </button>
                                     <button type="button" class="btn">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="type" value="2"> 支持反方
+                                                <input type="radio" name="support" value="2"> 支持反方
                                             </label>
                                         </div>
                                     </button>
@@ -171,12 +172,17 @@
                             <div class="colo-md-12 box-body comment-option comment-piece" style="padding:4px 10px;">
                                 <div class="box-body" style="padding:4px 0">
                                     @if($comment->is_anonymous == 1)
-                                    <a href="javascript:void(0)">匿名评论</a>
+                                    <a href="javascript:void(0)">
+                                        @if(Auth::check())
+                                            @if($comment->user->id == Auth::user()->id) 【我】 @else 匿名评论 @endif
+                                        @else 匿名评论
+                                        @endif
+                                    </a>
                                     @else
                                         <a href="{{url('/u/'.encode($comment->user->id))}}">{{$comment->user->name}}</a>
                                     @endif
-                                    @if($comment->type == 1) <b class="text-primary">【正方 <i class="fa fa-thumbs-o-up"></i>】</b>
-                                    @elseif($comment->type == 2) <b class="text-danger">【反方 <i class="fa fa-thumbs-o-up"></i>】</b>
+                                    @if($comment->support == 1) <b class="text-primary">【正方 <i class="fa fa-thumbs-o-up"></i>】</b>
+                                    @elseif($comment->support == 2) <b class="text-danger">【反方 <i class="fa fa-thumbs-o-up"></i>】</b>
                                     @endif
                                     {{--<span class="pull-right">{{ date('Y-n-j H:i', $comment->created_at) }}</span>--}}
                                     <span class="pull-right text-muted disabled">{{ $comment->created_at->format('n月j日 H:i') }}</span>
@@ -191,7 +197,8 @@
                         </div>
 
                         <div class="col-md-12" style="padding:16px 0">
-                            <button type="button" class="btn btn-block btn-flat btn-default comment-more">更多</button>
+                            <a href="{{url('/topic/'.encode($data->id))}}" target="_blank">
+                                <button type="button" class="btn btn-block btn-flat btn-default comment-more">更多</button></a>
                         </div>
 
                     </div>
