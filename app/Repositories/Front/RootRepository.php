@@ -120,8 +120,25 @@ class RootRepository {
         ], $messages);
         if ($v->fails())
         {
-            $messages = $v->errors();
-            return response_error([],$messages->first());
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if($post_data['type'] == 2)
+        {
+            $messages2 = [
+                'positive.required' => '请输入正方观点',
+                'negative.required' => '请输入反方观点',
+            ];
+            $v2 = Validator::make($post_data, [
+                'positive' => 'required',
+                'negative' => 'required'
+            ], $messages2);
+            if ($v2->fails())
+            {
+                $errors2 = $v2->errors();
+                return response_error([],$errors2->first());
+            }
         }
 
         if(Auth::check())

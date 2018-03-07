@@ -76,7 +76,7 @@ class AuthRepository {
                         $post_data['code'] = $code;
                         $post_data['target'] = $email;
 
-                        $url = config('common.MailService').'/course/email/activation';
+                        $url = config('common.MailService').'/topic/email/activation';
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -102,8 +102,8 @@ class AuthRepository {
             {
                 DB::rollback();
 //                exit($e->getMessage());
-                $msg = $e->getMessage();
-//                $msg = '注册失败，请重试！';
+//                $msg = $e->getMessage();
+                $msg = '注册失败，请重试！';
                 return response_fail([],$msg);
             }
         }
