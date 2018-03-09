@@ -148,7 +148,7 @@ class RootRepository {
 
 
 
-    // 用户评论
+    // 点赞
     public function topic_favor_save($post_data)
     {
         $messages = [
@@ -192,8 +192,8 @@ class RootRepository {
                 {
                     DB::rollback();
 //                    exit($e->getMessage());
-                    $msg = $e->getMessage();
-//                    $msg = '添加失败，请重试！';
+//                    $msg = $e->getMessage();
+                    $msg = '添加失败，请重试！';
                     return response_fail([], $msg);
                 }
             }
@@ -204,7 +204,7 @@ class RootRepository {
         else return response_error([],"请先登录！");
 
     }
-    // 用户评论
+    // 取消赞
     public function topic_favor_cancel($post_data)
     {
         $messages = [
@@ -254,8 +254,8 @@ class RootRepository {
                 {
                     DB::rollback();
 //                    exit($e->getMessage());
-                    $msg = $e->getMessage();
-//                    $msg = '操作失败，请重试！';
+//                    $msg = $e->getMessage();
+                    $msg = '操作失败，请重试！';
                     return response_fail([], $msg);
                 }
             }
@@ -265,6 +265,128 @@ class RootRepository {
         else return response_error([],"请先登录！");
 
     }
+
+
+    // 收藏
+    public function topic_collect_save($post_data)
+    {
+        $messages = [
+            'type.required' => '参数有误',
+            'topic_id.required' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'type' => 'required',
+            'topic_id' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $topic_encode = $post_data['topic_id'];
+            $topic_decode = decode($topic_encode);
+            if(!$topic_decode) return response_error([],"参数有误，请重试！");
+
+            $topic = Topic::find($topic_decode);
+            if($topic)
+            {
+                DB::beginTransaction();
+                try
+                {
+                    $time = time();
+                    $user = Auth::user();
+                    $user->pivot_topics()->attach($topic_decode,['type'=>2,'created_at'=>$time,'updated_at'=>$time]);
+
+                    $topic->increment('collect_num');
+
+                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    DB::commit();
+                    return response_success($html);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+//                    exit($e->getMessage());
+//                    $msg = $e->getMessage();
+                    $msg = '添加失败，请重试！';
+                    return response_fail([], $msg);
+                }
+            }
+            else return response_error([],"该话题不存在，刷新一下试试！");
+
+
+        }
+        else return response_error([],"请先登录！");
+
+    }
+    // 取消收藏
+    public function topic_collect_cancel($post_data)
+    {
+        $messages = [
+            'type.required' => '参数有误',
+            'topic_id.required' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'type' => 'required',
+            'topic_id' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $topic_encode = $post_data['topic_id'];
+            $topic_decode = decode($topic_encode);
+            if(!$topic_decode) return response_error([],"该话题不存在，刷新一下试试！");
+
+            $topic = Topic::find($topic_decode);
+            if($topic)
+            {
+                DB::beginTransaction();
+                try
+                {
+                    $user = Auth::user();
+                    $user_id = $user->id;
+
+                    $favors = Pivot_User_Topic::where(['type'=>2,'user_id'=>$user_id,'topic_id'=>$topic_decode]);
+                    $count = count($favors->get());
+                    if($count)
+                    {
+                        $num = $favors->delete();
+                        if($num != $count) throw new Exception("delete--pivot--fail");
+
+                        $topic->decrement('collect_num');
+                    }
+                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    DB::commit();
+                    return response_success($html);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+//                    exit($e->getMessage());
+//                    $msg = $e->getMessage();
+                    $msg = '操作失败，请重试！';
+                    return response_fail([], $msg);
+                }
+            }
+            else return response_error([],"该话题不存在，刷新一下试试！");
+
+        }
+        else return response_error([],"请先登录！");
+
+    }
+
+
+
 
     // 用户评论
     public function topic_comment_save($post_data)

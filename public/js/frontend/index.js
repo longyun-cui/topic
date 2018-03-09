@@ -25,6 +25,7 @@ jQuery( function ($) {
                 if(!data.success) layer.msg(data.msg);
                 else
                 {
+                    layer.msg("赞！");
                     topic_option.html(data.data.html);
                 }
             },
@@ -36,7 +37,7 @@ jQuery( function ($) {
         var that = $(this);
         var topic_option = $(this).parents('.topic-option');
 
-        layer.msg('取消赞？', {
+        layer.msg('取消"赞"？', {
             time: 0
             ,btn: ['确定', '取消']
             ,yes: function(index){
@@ -65,7 +66,7 @@ jQuery( function ($) {
 
 
     // 收藏
-    $(".topic-option").off("click",".collect-this").on('click', ".favor-this", function() {
+    $(".topic-option").off("click",".collect-this").on('click', ".collect-this", function() {
         var that = $(this);
         var topic_option = $(this).parents('.topic-option');
 
@@ -80,13 +81,43 @@ jQuery( function ($) {
                 if(!data.success) layer.msg(data.msg);
                 else
                 {
-                    layer.msg(data.msg);
-                    //topic_option.find('.comment-list-container').html(data.data.html);
-                    // location.reload();
+                    layer.msg("收藏成功！");
+                    topic_option.html(data.data.html);
                 }
             },
             'json'
         );
+    });
+    // 取消收藏
+    $(".topic-option").off("click",".collect-this-cancel").on('click', ".collect-this-cancel", function() {
+        var that = $(this);
+        var topic_option = $(this).parents('.topic-option');
+
+        layer.msg('取消"收藏"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/topic/collect/cancel",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        topic_id: topic_option.attr('data-id'),
+                        type: 2
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg);
+                        else
+                        {
+                            topic_option.html(data.data.html);
+                            layer.closeAll();
+                            // var index = parent.layer.getFrameIndex(window.name);
+                            // parent.layer.close(index);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
     });
 
 
