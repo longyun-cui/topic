@@ -4,11 +4,13 @@ namespace App\Repositories\Front;
 use App\User;
 use App\Models\Topic;
 use App\Models\Communication;
+use App\Models\Pivot_User_Topic;
 
 use App\Repositories\Common\CommonRepository;
 
 use Response, Auth, Validator, DB, Exception, Blade;
 use QrCode;
+use function Sodium\increment;
 
 class RootRepository {
 
@@ -21,15 +23,55 @@ class RootRepository {
     }
 
 
+
+    // 平台主页
+    public function view_item_html($id)
+    {
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $data = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->find($id);
+        }
+        else
+        {
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
+            ])->find($id);
+        }
+//        dd($datas->toArray());
+        return view('frontend.component.topic')->with(['data'=>$data])->__toString();
+    }
+
+
     // 平台主页
     public function view_all($post_data)
     {
-        $datas = Topic::with([
-            'user',
-            'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
-        ])->where('active', 1)
-            ->orderBy('id','desc')->paginate(20);
-//        dd($datas);
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->where('active', 1)
+                ->orderBy('id','desc')->paginate(20);
+        }
+        else
+        {
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
+            ])->where('active', 1)
+                ->orderBy('id','desc')->paginate(20);
+        }
+//        dd($datas->toArray());
         return view('frontend.root.topics')->with(['datas'=>$datas,'menu_all'=>'active']);
     }
 
@@ -58,7 +100,6 @@ class RootRepository {
     }
 
 
-
     // 课程详情
     public function view_topic($post_data,$id=0)
     {
@@ -83,7 +124,6 @@ class RootRepository {
     }
 
 
-
     // 用户首页
     public function view_user($post_data,$id=0)
     {
@@ -103,6 +143,127 @@ class RootRepository {
             ->orderBy('id','desc')->paginate(20);
 
         return view('frontend.root.user')->with(['data'=>$user,'topics'=>$topics]);
+    }
+
+
+
+
+    // 用户评论
+    public function topic_favor_save($post_data)
+    {
+        $messages = [
+            'type.required' => '参数有误',
+            'topic_id.required' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'type' => 'required',
+            'topic_id' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $topic_encode = $post_data['topic_id'];
+            $topic_decode = decode($topic_encode);
+            if(!$topic_decode) return response_error([],"参数有误，请重试！");
+
+            $topic = Topic::find($topic_decode);
+            if($topic)
+            {
+                DB::beginTransaction();
+                try
+                {
+                    $time = time();
+                    $user = Auth::user();
+                    $user->pivot_topics()->attach($topic_decode,['type'=>1,'created_at'=>$time,'updated_at'=>$time]);
+
+                    $topic->increment('favor_num');
+
+                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    DB::commit();
+                    return response_success($html);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+//                    exit($e->getMessage());
+                    $msg = $e->getMessage();
+//                    $msg = '添加失败，请重试！';
+                    return response_fail([], $msg);
+                }
+            }
+            else return response_error([],"该话题不存在，刷新一下试试！");
+
+
+        }
+        else return response_error([],"请先登录！");
+
+    }
+    // 用户评论
+    public function topic_favor_cancel($post_data)
+    {
+        $messages = [
+            'type.required' => '参数有误',
+            'topic_id.required' => '参数有误',
+        ];
+        $v = Validator::make($post_data, [
+            'type' => 'required',
+            'topic_id' => 'required'
+        ], $messages);
+        if ($v->fails())
+        {
+            $errors = $v->errors();
+            return response_error([],$errors->first());
+        }
+
+        if(Auth::check())
+        {
+            $topic_encode = $post_data['topic_id'];
+            $topic_decode = decode($topic_encode);
+            if(!$topic_decode) return response_error([],"该话题不存在，刷新一下试试！");
+
+            $topic = Topic::find($topic_decode);
+            if($topic)
+            {
+                DB::beginTransaction();
+                try
+                {
+                    $user = Auth::user();
+                    $user_id = $user->id;
+
+                    $favors = Pivot_User_Topic::where(['type'=>1,'user_id'=>$user_id,'topic_id'=>$topic_decode]);
+                    $count = count($favors->get());
+                    if($count)
+                    {
+                        $num = $favors->delete();
+                        if($num != $count) throw new Exception("delete--pivot--fail");
+
+                        $topic->decrement('favor_num');
+                    }
+                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    DB::commit();
+                    return response_success($html);
+                }
+                catch (Exception $e)
+                {
+                    DB::rollback();
+//                    exit($e->getMessage());
+                    $msg = $e->getMessage();
+//                    $msg = '操作失败，请重试！';
+                    return response_fail([], $msg);
+                }
+            }
+            else return response_error([],"该话题不存在，刷新一下试试！");
+
+        }
+        else return response_error([],"请先登录！");
+
     }
 
     // 用户评论
@@ -180,12 +341,11 @@ class RootRepository {
                 $msg = '添加失败，请重试！';
                 return response_fail([], $msg);
             }
-
-            dd($insert);
         }
         else return response_error([],"请先登录！");
 
     }
+
     public function topic_comment_get($post_data)
     {
         $topic_encode = $post_data['id'];

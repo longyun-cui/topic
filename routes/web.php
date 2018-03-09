@@ -51,6 +51,18 @@ Route::group(['namespace' => 'Front'], function () {
 
     Route::get('u/{id?}', 'RootController@view_user');
 
+
+    Route::group(['middleware' => 'login'], function () {
+
+        Route::post('topic/favor/save', 'RootController@topic_favor_save');
+        Route::post('topic/favor/cancel', 'RootController@topic_favor_cancel');
+
+        Route::post('topic/collect/save', 'RootController@topic_collect_save');
+        Route::post('topic/collect/cancel', 'RootController@topic_collect_cancel');
+
+    });
+
+
     Route::post('topic/comment/save', 'RootController@topic_comment_save');
     Route::post('topic/comment/get', 'RootController@topic_comment_get');
 
@@ -107,6 +119,24 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             });
 
             Route::get('select2_menus', $controller.'@select2_menus');
+        });
+
+        // 点赞
+        Route::group(['prefix' => 'favor'], function () {
+
+            $controller = 'OtherController';
+
+            Route::match(['get','post'], 'list', $controller.'@favor_viewList');
+            Route::post('delete', $controller.'@favor_deleteAction');
+        });
+
+        // 收藏
+        Route::group(['prefix' => 'collect'], function () {
+
+            $controller = 'OtherController';
+
+            Route::match(['get','post'], 'list', $controller.'@collect_viewList');
+            Route::post('delete', $controller.'@collect_deleteAction');
         });
     });
 

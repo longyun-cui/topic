@@ -45,6 +45,27 @@ class RootController extends Controller
         return $this->repo->view_user(request()->all(),$id);
     }
 
+
+
+    public function topic_favor_save()
+    {
+        return $this->repo->topic_favor_save(request()->all());
+    }
+    public function topic_favor_cancel()
+    {
+        return $this->repo->topic_favor_cancel(request()->all());
+    }
+
+    public function topic_collect_save()
+    {
+        return $this->repo->topic_collect_save(request()->all());
+    }
+    public function topic_collect_cancel()
+    {
+        return $this->repo->topic_collect_cancel(request()->all());
+    }
+
+
     public function topic_comment_save()
     {
         return $this->repo->topic_comment_save(request()->all());

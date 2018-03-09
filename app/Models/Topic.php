@@ -25,6 +25,12 @@ class Topic extends Model
         return $this->hasMany('App\Models\Communication','topic_id','id');
     }
 
+    // 内容
+    function others()
+    {
+        return $this->hasMany('App\Models\Pivot_User_Topic','topic_id','id');
+    }
+
     /**
      * 获得此人的所有标签。
      */

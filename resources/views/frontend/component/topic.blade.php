@@ -1,16 +1,4 @@
-@extends('frontend.layout.layout')
 
-@section('title','匿名者')
-@section('header','')
-@section('description','')
-
-@section('content')
-<div style="display:none;">
-    <input type="hidden" id="" value="{{$encode or ''}}" readonly>
-</div>
-
-{{--作者--}}
-@foreach($datas as $num => $data)
     <div class="row topic-option" data-id="{{encode($data->id)}}">
         <div class="col-md-9">
             <!-- BEGIN PORTLET-->
@@ -159,21 +147,21 @@
                                 <button type="button" class="btn get-comments" data-type="all">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" checked="checked"> 全部评论
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-0'}}" checked="checked"> 全部评论
                                         </label>
                                     </div>
                                 </button>
                                 <button type="button" class="btn get-comments" data-type="positive">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" value="1"> 只看正方
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-0'}}" value="1"> 只看正方
                                         </label>
                                     </div>
                                 </button>
                                 <button type="button" class="btn get-comments" data-type="negative">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id).'-'.$loop->index}}" value="2"> 只看反方
+                                            <input type="radio" name="get-comments-{{encode($data->id).'-0'}}" value="2"> 只看反方
                                         </label>
                                     </div>
                                 </button>
@@ -227,29 +215,4 @@
             <!-- END PORTLET-->
         </div>
     </div>
-@endforeach
 
-{{ $datas->links() }}
-
-@endsection
-
-
-@section('style')
-<style>
-    .box-footer a {color:#777;cursor:pointer;}
-    .box-footer a:hover {color:orange;cursor:pointer;}
-    .comment-container {border-top:2px solid #ddd;}
-    .comment-choice-container {border-top:2px solid #ddd;}
-    .comment-choice-container .form-group { margin-bottom:0;}
-    .comment-entity-container {border-top:2px solid #ddd;}
-    .comment-piece {border-bottom:1px solid #eee;}
-    .comment-piece:first-child {}
-</style>
-@endsection
-
-@section('js')
-<script>
-    $(function() {
-    });
-</script>
-@endsection
