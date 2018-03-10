@@ -57,8 +57,11 @@ class OtherRepository {
         foreach ($list as $k => $v)
         {
             $list[$k]->encode_id = encode($v->id);
-            $list[$k]->topic->encode_id = encode($v->topic->id);
-            $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+            if($list[$k]->topic)
+            {
+                $list[$k]->topic->encode_id = encode($v->topic->id);
+                $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+            }
         }
         return datatable_response($list, $draw, $total);
     }
@@ -76,6 +79,13 @@ class OtherRepository {
         DB::beginTransaction();
         try
         {
+            $topic_id = $collection->topic_id;
+            $topic = Topic::find($topic_id);
+            if($topic)
+            {
+                $topic->decrement('collect_num');
+            }
+
             $bool = $collection->delete();
             if(!$bool) throw new Exception("delete--collection--fail");
 
@@ -124,8 +134,11 @@ class OtherRepository {
         foreach ($list as $k => $v)
         {
             $list[$k]->encode_id = encode($v->id);
-            $list[$k]->topic->encode_id = encode($v->topic->id);
-            $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+            if($list[$k]->topic)
+            {
+                $list[$k]->topic->encode_id = encode($v->topic->id);
+                $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+            }
         }
         return datatable_response($list, $draw, $total);
     }
@@ -143,6 +156,13 @@ class OtherRepository {
         DB::beginTransaction();
         try
         {
+            $topic_id = $other->topic_id;
+            $topic = Topic::find($topic_id);
+            if($topic)
+            {
+                $topic->decrement('favor_num');
+            }
+
             $bool = $other->delete();
             if(!$bool) throw new Exception("delete--other--fail");
 

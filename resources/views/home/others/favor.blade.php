@@ -110,7 +110,8 @@
                         "data": "encode_id",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return row.topic == null ? '' : '<a target="_blank" href="/topic/'+row.topic.encode_id+'">'+row.topic.title+'</a>';
+                            return row.topic == null ?
+                                '该话题已经不在了！' : '<a target="_blank" href="/topic/'+row.topic.encode_id+'">'+row.topic.title+'</a>';
                         }
                     },
                     {
