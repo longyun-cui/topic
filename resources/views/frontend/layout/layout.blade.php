@@ -64,7 +64,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @yield('style')
 
     <style>
-        .header-logo {-webkit-transition: width .3s ease-in-out;
+        .header-logo {
+            -webkit-transition: width .3s ease-in-out;
             -o-transition: width .3s ease-in-out;
             transition: width .3s ease-in-out;
             display: block;
@@ -78,7 +79,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             padding: 0 15px;
             font-weight: 300;
             color:#fff;
-            overflow: hidden;}
+            overflow: hidden;
+        }
     </style>
 
 </head>
@@ -208,7 +210,7 @@ desired effect
         </section>
 
         <!-- Main content -->
-        <section class="content" style="margin-top:16px;" id="content-container">
+        <section class="content" id="content-container">
             @yield('content') {{--Your Page Content Here--}}
         </section>
         <!-- /.content -->

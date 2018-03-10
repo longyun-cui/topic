@@ -23,18 +23,22 @@
                 </div>
             </div>
 
-            <div class="box-body" id="topic-list-body">
+            <div class="box-body" id="other-list-body">
                 <!-- datatable start -->
                 <table class='table table-striped table-bordered' id='datatable_ajax'>
                     <thead>
                     <tr role='row' class='heading'>
                         <th>话题</th>
+                        <th>作者</th>
                         <th>浏览数</th>
-                        <th>分享数</th>
+                        <th>收藏数</th>
+                        <th>点赞数</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     <tr>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -106,26 +110,40 @@
                         "data": "encode_id",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return '<a target="_blank" href="/topic/'+data+'">'+row.topic.title+'</a>';
+                            return row.topic == null ? '' : '<a target="_blank" href="/topic/'+row.topic.encode_id+'">'+row.topic.title+'</a>';
+                        }
+                    },
+                    {
+                        'data': 'user',
+                        'orderable': false,
+                        render: function(data, type, row, meta) {
+                            return row.topic == null ? '' : '<a target="_blank" href="/u/'+row.topic.user.encode_id+'">'+row.topic.user.name+'</a>';
                         }
                     },
                     {
                         'data': 'visit_num',
-                        'orderable': true,
-                        render: function(val) {
-                            return val == null ? 0 : val;
+                        'orderable': false,
+                        render: function(data, type, row, meta) {
+                            return row.topic == null ? 0 : row.topic.visit_num;
                         }
                     },
                     {
-                        'data': 'share_num',
-                        'orderable': true,
-                        render: function(val) {
-                            return val == null ? 0 : val;
+                        'data': 'collect_num',
+                        'orderable': false,
+                        render: function(data, type, row, meta) {
+                            return row.topic == null ? 0 : row.topic.collect_num;
+                        }
+                    },
+                    {
+                        'data': 'favor_num',
+                        'orderable': false,
+                        render: function(data, type, row, meta) {
+                            return row.topic == null ? 0 : row.topic.favor_num;
                         }
                     },
                     {
                         'data': 'created_at',
-                        'orderable': true,
+                        'orderable': false,
                         render: function(data) {
                             newDate = new Date();
                             newDate.setTime(data * 1000);
@@ -136,30 +154,7 @@
                         'data': 'encode_id',
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            var active_html = '';
-                            if(row.active == 1)
-                                active_html = '<li><a class="topic-disable-submit" data-id="'+data+'">禁用</a></li>';
-                            else
-                                active_html = '<li><a class="topic-enable-submit" data-id="'+data+'">启用</a></li>';
-
-                            var html =
-                                '<div class="btn-group">'+
-                                '<button type="button" class="btn btn-sm btn-primary">操作</button>'+
-                                '<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
-                                '<span class="caret"></span>'+
-                                '<span class="sr-only">Toggle Dropdown</span>'+
-                                '</button>'+
-                                '<ul class="dropdown-menu" role="menu">'+
-                                '<li><a href="/home/topic/edit?id='+data+'">编辑</a></li>'+
-                                active_html+
-//                                '<li><a href="/admin/statistics/page?module=2&id='+data+'">流量统计</a></li>'+
-//                                '<li><a class="download-qrcode" data-id="'+data+'">下载二维码</a></li>'+
-                                '<li><a class="topic-delete-submit" data-id="'+data+'" >删除</a></li>'+
-                                '<li class="divider"></li>'+
-                                '<li><a href="#">Separated link</a></li>'+
-                                '</ul>'+
-                                '</div>';
-                            return html;
+                            return '<button type="button" class="btn btn-sm bg-purple favor-delete-submit" data-id="'+data+'">删除</button>';
                         }
                     }
                 ],
@@ -235,14 +230,14 @@
     $(function() {
 
         // 表格【删除】
-        $("#topic-list-body").on('click', ".topic-delete-submit", function() {
+        $("#other-list-body").on('click', ".favor-delete-submit", function() {
             var that = $(this);
-            layer.msg('确定要删除该"话题"么', {
+            layer.msg('确定要取消"赞"么', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/home/topic/delete",
+                            "/home/favor/delete",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -255,58 +250,6 @@
                     );
                 }
             });
-        });
-
-        // 表格【分享】
-        $("#topic-list-body").on('click', ".topic-enable-submit", function() {
-            var that = $(this);
-            layer.msg('确定启用该"话题"？', {
-                time: 0
-                ,btn: ['确定', '取消']
-                ,yes: function(index){
-                    $.post(
-                            "/home/topic/enable",
-                            {
-                                _token: $('meta[name="_token"]').attr('content'),
-                                id:that.attr('data-id')
-                            },
-                            function(data){
-                                if(!data.success) layer.msg(data.msg);
-                                else location.reload();
-                            },
-                            'json'
-                    );
-                }
-            });
-        });
-
-        // 表格【取消分享】
-        $("#topic-list-body").on('click', ".topic-disable-submit", function() {
-            var that = $(this);
-            layer.msg('确定禁用该"话题"？', {
-                time: 0
-                ,btn: ['确定', '取消']
-                ,yes: function(index){
-                    $.post(
-                            "/home/topic/disable",
-                            {
-                                _token: $('meta[name="_token"]').attr('content'),
-                                id:that.attr('data-id')
-                            },
-                            function(data){
-                                if(!data.success) layer.msg(data.msg);
-                                else location.reload();
-                            },
-                            'json'
-                    );
-                }
-            });
-        });
-
-        // 【下载】 二维码
-        $("#topic-main-body").on('click', ".download-qrcode", function() {
-            var that = $(this);
-            window.open('/admin/download_qrcode?sort=table&id='+that.attr('data-id'));
         });
 
     });

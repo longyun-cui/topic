@@ -36,6 +36,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Topic','user_id','id');
     }
 
+    // 收藏的话题
+    function collections()
+    {
+        return $this->belongsToMany('App\Models\Topic','pivot_user_collection','user_id','topic_id');
+    }
+
     // 与我相关的话题
     function pivot_topics()
     {

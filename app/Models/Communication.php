@@ -22,7 +22,7 @@ class Communication extends Model
     // 课程
     function topic()
     {
-        return $this->belongsTo('App\Models\Topic','course_id','id');
+        return $this->belongsTo('App\Models\Topic','topic_id','id');
     }
 
     // 父节点

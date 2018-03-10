@@ -13,16 +13,28 @@ class Topic extends Model
     protected $dateFormat = 'U';
 
 
-    // 管理员
+    // 用户信息
     function user()
     {
         return $this->belongsTo('App\User','user_id','id');
     }
 
-    // 内容
+    // 评论
     function communications()
     {
         return $this->hasMany('App\Models\Communication','topic_id','id');
+    }
+
+    // 点赞
+    function favor()
+    {
+        return $this->hasMany('App\Models\Communication','topic_id','id');
+    }
+
+    // 收藏
+    function collections()
+    {
+        return $this->hasMany('App\Models\Pivot_User_Collection','topic_id','id');
     }
 
     // 内容
@@ -31,18 +43,18 @@ class Topic extends Model
         return $this->hasMany('App\Models\Pivot_User_Topic','topic_id','id');
     }
 
+    // 与我相关的话题
+    function pivot_users()
+    {
+        return $this->belongsToMany('App\User','pivot_user_topic','topic_id','user_id');
+    }
+
     /**
      * 获得此人的所有标签。
      */
     public function tags()
     {
         return $this->morphToMany('App\Models\Tag', 'taggable');
-    }
-
-    // 与我相关的话题
-    function pivot_users()
-    {
-        return $this->belongsToMany('App\User','pivot_user_topic','topic_id','user_id');
     }
 
 
