@@ -160,16 +160,16 @@
                             <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="1"
-                                               class="get-comments" data-getSort="positive"> 只看正方
+                                        <input type="radio" name="get-comments-{{encode($data->id)}}" class="get-comments" data-getSort="positive">
+                                        <b class="text-primary">只看【正方 <i class="fa fa-thumbs-o-up"></i>】</b>
                                     </label>
                                 </div>
                             </button>
                             <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="2"
-                                               class="get-comments" data-getSort="negative"> 只看反方
+                                        <input type="radio" name="get-comments-{{encode($data->id)}}" class="get-comments" data-getSort="negative">
+                                        <b class="text-danger">只看【反方 <i class="fa fa-thumbs-o-up"></i>】</b>
                                     </label>
                                 </div>
                             </button>
