@@ -1,7 +1,6 @@
 @extends('frontend.layout.layout')
 
 @section('title') {{$data->name}}的主页 @endsection
-@section('header_text') {{$data->name}} <small></small> @endsection
 @section('header') {{$data->name}} @endsection
 @section('description','主页')
 @section('breadcrumb')

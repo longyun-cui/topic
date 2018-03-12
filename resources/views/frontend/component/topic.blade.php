@@ -75,11 +75,13 @@
                 </a>
 
                 <a class="margin"><i class="fa fa-share"></i> @if($data->share_num) {{$data->share_num}} @endif</a>
-                <a class="margin comment-toggle"><i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif</a>
+
+                <a class="margin @if($getType == 'items') comment-toggle @endif"><i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif</a>
+
             </div>
 
             {{--添加评论--}}
-            <div class="box-body comment-container" style="display:none;" >
+            <div class="box-body comment-container" @if($getType == 'items') style="display:none; @endif" >
 
                 <div class="box-body comment-input-container">
                 <form action="" method="post" class="form-horizontal form-bordered topic-comment-form">
@@ -134,7 +136,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top:16px;">
                         <div class="col-md-12 ">
                             <button type="button" class="btn btn-block btn-flat btn-primary comment-submit">提交</button>
                         </div>
@@ -147,47 +149,48 @@
                 <div class="box-body comment-choice-container">
                     <div class="form-group form-type">
                         <div class="btn-group">
-                            <button type="button" class="btn get-comments get-comments-default" data-type="all">
+                            <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" checked="checked"> 全部评论
+                                        <input type="radio" name="get-comments-{{encode($data->id)}}" checked="checked"
+                                               class="get-comments get-comments-default" data-getSort="all"> 全部评论
                                     </label>
                                 </div>
                             </button>
-                            <button type="button" class="btn get-comments" data-type="positive">
+                            <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="1"> 只看正方
+                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="1"
+                                               class="get-comments" data-getSort="positive"> 只看正方
                                     </label>
                                 </div>
                             </button>
-                            <button type="button" class="btn get-comments" data-type="negative">
+                            <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="2"> 只看反方
+                                        <input type="radio" name="get-comments-{{encode($data->id)}}" value="2"
+                                               class="get-comments" data-getSort="negative"> 只看反方
                                     </label>
                                 </div>
                             </button>
                         </div>
                     </div>
                 </div>
+                @else
+                    <input type="hidden" class="get-comments get-comments-default" data-type="all">
                 @endif
 
                 {{--评论列表--}}
                 <div class="box-body comment-entity-container">
 
-                    <div class="comment-list-container">
-                        @if($data->type == 1)
-                            @foreach($data->communications as $comment)
-                                @include('frontend.component.comment')
-                            @endforeach
-                        @endif
-                    </div>
+                    @if($getType == 'items')
+                        @include('frontend.component.commentEntity.items')
+                    @elseif($getType == 'item')
+                        @include('frontend.component.commentEntity.item')
+                    @else
+                    @endif
 
-                    <div class="col-md-12" style="padding:16px 0">
-                        <a href="{{url('/topic/'.encode($data->id))}}" target="_blank">
-                            <button type="button" class="btn btn-block btn-flat btn-default comment-more">更多</button></a>
-                    </div>
+                    {{--@include('frontend.component.commentEntity.topic')--}}
 
                 </div>
 

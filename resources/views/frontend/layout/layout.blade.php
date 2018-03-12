@@ -127,7 +127,7 @@ desired effect
 
 
             <div class="header-logo">
-                <span class="logo-lg"><b>@yield('header_text')</b></span>
+                <span class="logo-lg"><b>@yield('header_title')</b></span>
             </div>
 
             <!-- Navbar Right Menu -->
@@ -162,12 +162,12 @@ desired effect
                     <a href="{{url('/')}}"><i class="fa fa-list text-blue"></i> <span>全部</span></a>
                 </li>
 
-                <li class="treeview {{ $menu_anonymous or '' }}">
-                    <a href="{{url('/anonymous')}}"><i class="fa fa-list text-grey"></i> <span>匿名话题</span></a>
-                </li>
-
                 <li class="treeview {{ $menu_debates or '' }}">
                     <a href="{{url('/debates')}}"><i class="fa fa-list text-orange"></i> <span>辩题</span></a>
+                </li>
+
+                <li class="treeview {{ $menu_anonymous or '' }}">
+                    <a href="{{url('/anonymous')}}"><i class="fa fa-list text-grey"></i> <span>匿名话题</span></a>
                 </li>
 
                 <li class="header">Home</li>

@@ -127,6 +127,8 @@ jQuery( function ($) {
     });
 
 
+
+
     // 显示评论
     $(".comment-toggle").off("click").on('click', function() {
         var item_option = $(this).parents('.item-option');
@@ -161,25 +163,86 @@ jQuery( function ($) {
     // 查看评论
     $(".item-option").off("click",".get-comments").on('click', ".get-comments", function() {
         var that = $(this);
-        var topic_option = $(this).parents('.topic-option');
+        var item_option = $(this).parents('.item-option');
+        var getSort = that.attr('data-getSort');
 
         $.post(
             "/topic/comment/get",
             {
                 _token: $('meta[name="_token"]').attr('content'),
-                id: topic_option.attr('data-id'),
-                type: that.attr('data-type')
+                id: item_option.attr('data-id'),
+                getSort: getSort
             },
             function(data){
                 if(!data.success) layer.msg(data.msg);
                 else
                 {
-                    topic_option.find('.comment-list-container').html(data.data.html);
-                    // location.reload();
+                    item_option.find('.comment-list-container').html(data.data.html);
+
+                    item_option.find('.comments-more').attr("data-getSort",getSort);
+                    item_option.find('.comments-more').attr("data-maxId",data.data.max_id);
+                    item_option.find('.comments-more').attr("data-minId",data.data.min_id);
+                    item_option.find('.comments-more').attr("data-more",data.data.more);
+                    if(data.data.more == 'more')
+                    {
+                        item_option.find('.comments-more').html("更多");
+                    }
+                    else if(data.data.more == 'none')
+                    {
+                        item_option.find('.comments-more').html("没有更多了");
+                    }
                 }
             },
             'json'
         );
+    });
+    // 更多评论
+    $(".item-option").off("click",".comments-more").on('click', ".comments-more", function() {
+
+        var that = $(this);
+        var more = that.attr('data-more');
+        var getSort = that.attr('data-getSort');
+        var min_id = that.attr('data-minId');
+
+        var item_option = $(this).parents('.item-option');
+
+        if(more == 'more')
+        {
+            $.post(
+                "/topic/comment/get",
+                {
+                    _token: $('meta[name="_token"]').attr('content'),
+                    id: item_option.attr('data-id'),
+                    getSort: getSort,
+                    min_id: min_id
+                },
+                function(data){
+                    if(!data.success) layer.msg(data.msg);
+                    else
+                    {
+                        item_option.find('.comment-list-container').append(data.data.html);
+
+                        item_option.find('.comments-more').attr("data-getSort",getSort);
+                        item_option.find('.comments-more').attr("data-maxId",data.data.max_id);
+                        item_option.find('.comments-more').attr("data-minId",data.data.min_id);
+                        item_option.find('.comments-more').attr("data-more",data.data.more);
+                        if(data.data.more == 'more')
+                        {
+                            item_option.find('.comments-more').html("更多");
+                        }
+                        else if(data.data.more == 'none')
+                        {
+                            item_option.find('.comments-more').html("没有更多了");
+                        }
+                    }
+                },
+                'json'
+            );
+        }
+        else if(more == 'none')
+        {
+            layer.msg('没有更多了', function(){});
+        }
     });
 
 });

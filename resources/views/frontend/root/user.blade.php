@@ -1,8 +1,10 @@
 @extends('frontend.layout.layout')
 
-@section('title','匿名者')
+@section('title') {{$data->name or ''}} @endsection
 @section('header','')
 @section('description','')
+
+@section('header_title') {{ $data->name or '' }} @endsection
 
 @section('content')
 

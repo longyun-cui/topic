@@ -50,7 +50,7 @@ class RootRepository {
     }
 
 
-    // 平台主页
+    // 平台主页 【全部】
     public function view_all($post_data)
     {
         if(Auth::check())
@@ -74,31 +74,97 @@ class RootRepository {
                 ->orderBy('id','desc')->paginate(20);
         }
 //        dd($datas->toArray());
-        return view('frontend.root.topics')->with(['datas'=>$datas,'menu_all'=>'active']);
+        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_all'=>'active']);
     }
 
 
-    // 平台主页
-    public function view_anonymous($post_data)
-    {
-        $datas = Topic::with([
-            'user',
-            'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
-        ])->where(['active'=>1,'is_anonymous'=>1])
-            ->orderBy('id','desc')->paginate(20);
-        return view('frontend.root.topics')->with(['datas'=>$datas,'menu_anonymous'=>'active']);
-    }
-
-
-    // 平台主页
+    // 平台主页 【辩题】
     public function view_debates($post_data)
     {
-        $datas = Topic::with([
-            'user',
-            'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
-        ])->where(['active'=>1,'type'=>2])
-            ->orderBy('id','desc')->paginate(20);
-        return view('frontend.root.topics')->with(['datas'=>$datas,'menu_debates'=>'active']);
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->where(['active'=>1,'type'=>2])
+                ->orderBy('id','desc')->paginate(20);
+        }
+        else
+        {
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
+            ])->where(['active'=>1,'type'=>2])
+                ->orderBy('id','desc')->paginate(20);
+        }
+        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_debates'=>'active']);
+    }
+
+
+    // 平台主页 【匿名话题】
+    public function view_anonymous($post_data)
+    {
+
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->where(['active'=>1,'is_anonymous'=>1])
+                ->orderBy('id','desc')->paginate(20);
+        }
+        else
+        {
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
+            ])->where(['active'=>1,'is_anonymous'=>1])
+                ->orderBy('id','desc')->paginate(20);
+        }
+        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_anonymous'=>'active']);
+    }
+
+
+    // 平台主页 【用户首页】
+    public function view_user($post_data,$id=0)
+    {
+//        $course_encode = $post_data['id'];
+        $user_encode = $id;
+        $user_decode = decode($user_encode);
+        if(!$user_decode) return view('frontend.404');
+
+        $user = User::find($user_decode);
+
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->where(['user_id'=>$user_decode,'active'=>1,'is_anonymous'=>0])
+                ->orderBy('id','desc')->paginate(20);
+        }
+        else
+        {
+            $datas = Topic::with([
+                'user',
+                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
+            ])->where(['user_id'=>$user_decode,'active'=>1,'is_anonymous'=>0])
+                ->orderBy('id','desc')->paginate(20);
+        }
+
+        return view('frontend.root.user')->with(['getType'=>'items','data'=>$user,'topics'=>$datas]);
     }
 
 
@@ -111,10 +177,24 @@ class RootRepository {
         if(!$topic_decode) return view('frontend.404');
 
 
-        $topic = Topic::with([
-            'user'//,
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $topic = Topic::with([
+                'user',
+//                'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
+                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); },
+                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+            ])->find($topic_decode);
+        }
+        else
+        {
+            $topic = Topic::with([
+                'user'//,
 //            'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); }
-        ])->find($topic_decode);
+            ])->find($topic_decode);
+        }
 
         $communications = Communication::with(['user'])->where('topic_id',$topic_decode)
             ->orderBy('id','desc')->paginate(20);
@@ -122,29 +202,7 @@ class RootRepository {
         $topic->encode_id = encode($topic->id);
         $topic->user->encode_id = encode($topic->user->id);
 
-        return view('frontend.root.topic')->with(['data'=>$topic,'communications'=>$communications]);
-    }
-
-
-    // 用户首页
-    public function view_user($post_data,$id=0)
-    {
-//        $course_encode = $post_data['id'];
-        $user_encode = $id;
-        $user_decode = decode($user_encode);
-        if(!$user_decode) return view('frontend.404');
-
-//        $user = User::with([
-//            'topics'=>function($query) { $query->orderBy('id','desc'); }
-//        ])->find($user_decode);
-        $user = User::find($user_decode);
-
-        $topics = Topic::with([
-            'communications'=>function($query) { $query->limit(10)->orderBy('id','desc'); }
-        ])->where(['user_id'=>$user_decode,'active'=>1,'is_anonymous'=>0])
-            ->orderBy('id','desc')->paginate(20);
-
-        return view('frontend.root.user')->with(['data'=>$user,'topics'=>$topics]);
+        return view('frontend.root.topic')->with(['getType'=>'item','data'=>$topic,'communications'=>$communications]);
     }
 
 
@@ -389,7 +447,6 @@ class RootRepository {
 
 
 
-
     // 用户评论
     public function topic_comment_save($post_data)
     {
@@ -474,14 +531,32 @@ class RootRepository {
         $topic_encode = $post_data['id'];
         $topic_decode = decode($topic_encode);
 
-        $type = $post_data['type'];
+        $getSort = $post_data['getSort'];
         $comments = Communication::with(['user'])->where('topic_id',$topic_decode);
-        if($type == "positive") $comments->where('support',1);
-        else if($type == "negative") $comments->where('support',2);
-        $comments = $comments->orderBy('id','desc')->paginate(10);
-        $html["html"] = view('frontend.component.comments')->with("comments",$comments)->__toString();
 
-        return response_success($html);
+        if($getSort == "positive") $comments->where('support',1);
+        else if($getSort == "negative") $comments->where('support',2);
+
+        if(!empty($post_data['min_id']) && $post_data['min_id'] != 0) $comments->where('id', '<', $post_data['min_id']);
+
+        $comments = $comments->orderBy('id','desc')->paginate(10);
+
+        if(!$comments->isEmpty())
+        {
+            $return["html"] = view('frontend.component.comments')->with("comments",$comments)->__toString();
+            $return["max_id"] = $comments->first()->id;
+            $return["min_id"] = $comments->last()->id;
+            $return["more"] = ($comments->count() >= 10) ? 'more' : 'none';
+        }
+        else
+        {
+            $return["html"] = '';
+            $return["max_id"] = 0;
+            $return["min_id"] = 0;
+            $return["more"] = 'none';
+        }
+
+        return response_success($return);
     }
 
 
