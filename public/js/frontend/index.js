@@ -11,7 +11,7 @@ jQuery( function ($) {
 
 
 
-    // 收藏
+    // 收藏自己
     $(".item-option").off("click",".collect-mine").on('click', ".collect-mine", function() {
         layer.msg('不能收藏自己的', function(){});
     });
@@ -20,23 +20,30 @@ jQuery( function ($) {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
 
-        $.post(
-            "/topic/collect/save",
-            {
-                _token: $('meta[name="_token"]').attr('content'),
-                topic_id: item_option.attr('data-id'),
-                type: 2
-            },
-            function(data){
-                if(!data.success) layer.msg(data.msg, function(){});
-                else
-                {
-                    layer.msg("收藏成功");
-                    item_option.html(data.data.html);
-                }
-            },
-            'json'
-        );
+        layer.msg('确认"收藏"？', {
+            time: 0
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.post(
+                    "/topic/collect/save",
+                    {
+                        _token: $('meta[name="_token"]').attr('content'),
+                        topic_id: item_option.attr('data-id'),
+                        type: 2
+                    },
+                    function(data){
+                        if(!data.success) layer.msg(data.msg, function(){});
+                        else
+                        {
+                            layer.msg("收藏成功");
+                            item_option.html(data.data.html);
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+
     });
     // 取消收藏
     $(".item-option").off("click",".collect-this-cancel").on('click', ".collect-this-cancel", function() {

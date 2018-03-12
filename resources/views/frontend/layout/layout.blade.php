@@ -113,9 +113,9 @@ desired effect
         <!-- Logo -->
         <a href="{{url('/')}}" class="logo" style="background-color:#222d32;">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>匿</b></span>
+            <span class="logo-mini"><b>题</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>匿名者</b></span>
+            <span class="logo-lg"><b>话题社</b></span>
         </a>
 
         <!-- Header Navbar -->
