@@ -46,7 +46,7 @@ class RootRepository {
             ])->find($id);
         }
 //        dd($datas->toArray());
-        return view('frontend.component.topic')->with(['data'=>$data])->__toString();
+        return view('frontend.component.topic')->with(['getType'=>'items','data'=>$data])->__toString();
     }
 
 
@@ -243,10 +243,11 @@ class RootRepository {
 
                     $topic->increment('collect_num');
 
-                    $html['html'] = $this->view_item_html($topic_decode);
+                    $return = [];
+//                    $return['html'] = $this->view_item_html($topic_decode);
 
                     DB::commit();
-                    return response_success($html);
+                    return response_success($return);
                 }
                 catch (Exception $e)
                 {
@@ -305,10 +306,12 @@ class RootRepository {
 
                         $topic->decrement('collect_num');
                     }
-                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    $return = [];
+//                    $return['html'] = $this->view_item_html($topic_decode);
 
                     DB::commit();
-                    return response_success($html);
+                    return response_success($return);
                 }
                 catch (Exception $e)
                 {
@@ -362,10 +365,11 @@ class RootRepository {
 
                     $topic->increment('favor_num');
 
-                    $html['html'] = $this->view_item_html($topic_decode);
+                    $return = [];
+//                    $return['html'] = $this->view_item_html($topic_decode);
 
                     DB::commit();
-                    return response_success($html);
+                    return response_success($return);
                 }
                 catch (Exception $e)
                 {
@@ -424,10 +428,12 @@ class RootRepository {
 
                         $topic->decrement('favor_num');
                     }
-                    $html['html'] = $this->view_item_html($topic_decode);
+
+                    $return = [];
+//                    $return['html'] = $this->view_item_html($topic_decode);
 
                     DB::commit();
-                    return response_success($html);
+                    return response_success($return);
                 }
                 catch (Exception $e)
                 {

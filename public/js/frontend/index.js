@@ -29,14 +29,21 @@ jQuery( function ($) {
                     {
                         _token: $('meta[name="_token"]').attr('content'),
                         topic_id: item_option.attr('data-id'),
-                        type: 2
+                        type: 1
                     },
                     function(data){
                         if(!data.success) layer.msg(data.msg, function(){});
                         else
                         {
                             layer.msg("收藏成功");
-                            item_option.html(data.data.html);
+
+                            var btn = that.parents('.collect-btn');
+                            var num = parseInt(btn.attr('data-num'));
+                            num = num + 1;
+                            btn.attr('data-num',num);
+                            var html = '<span class="collect-this-cancel"><i class="fa fa-heart text-red"></i> '+num+'</span>';
+                            btn.html(html);
+                            // item_option.html(data.data.html);
                         }
                     },
                     'json'
@@ -59,16 +66,25 @@ jQuery( function ($) {
                     {
                         _token: $('meta[name="_token"]').attr('content'),
                         topic_id: item_option.attr('data-id'),
-                        type: 2
+                        type: 1
                     },
                     function(data){
                         if(!data.success) layer.msg(data.msg, function(){});
                         else
                         {
-                            item_option.html(data.data.html);
                             layer.closeAll();
                             // var index = parent.layer.getFrameIndex(window.name);
                             // parent.layer.close(index);
+
+                            var btn = that.parents('.collect-btn');
+                            var num = parseInt(btn.attr('data-num'));
+                            num = num - 1;
+                            btn.attr('data-num',num);
+                            if(num == 0) num = '';
+                            var html = '<span class="collect-this"><i class="fa fa-heart-o"> '+num+'</span>';
+                            btn.html(html);
+
+                            // item_option.html(data.data.html);
                         }
                     },
                     'json'
@@ -76,6 +92,7 @@ jQuery( function ($) {
             }
         });
     });
+
 
 
     // 点赞
@@ -94,8 +111,15 @@ jQuery( function ($) {
                 if(!data.success) layer.msg(data.msg, function(){});
                 else
                 {
-                    layer.msg("赞");
-                    item_option.html(data.data.html);
+                    layer.msg("点赞成功");
+
+                    var btn = that.parents('.favor-btn');
+                    var num = parseInt(btn.attr('data-num'));
+                    num = num + 1;
+                    btn.attr('data-num',num);
+                    var html = '<span class="favor-this-cancel"><i class="fa fa-thumbs-up text-red"></i> '+num+'</span>';
+                    btn.html(html);
+                    // item_option.html(data.data.html);
                 }
             },
             'json'
@@ -121,10 +145,19 @@ jQuery( function ($) {
                         if(!data.success) layer.msg(data.msg, function(){});
                         else
                         {
-                            item_option.html(data.data.html);
                             layer.closeAll();
                             // var index = parent.layer.getFrameIndex(window.name);
                             // parent.layer.close(index);
+
+                            var btn = that.parents('.favor-btn');
+                            var num = parseInt(btn.attr('data-num'));
+                            num = num - 1;
+                            btn.attr('data-num',num);
+                            if(num == 0) num = '';
+                            var html = '<span class="favor-this"><i class="fa fa-thumbs-o-up"></i> '+num+'</span>';
+                            btn.html(html);
+
+                            // item_option.html(data.data.html);
                         }
                     },
                     'json'

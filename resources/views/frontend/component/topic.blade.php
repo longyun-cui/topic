@@ -1,4 +1,4 @@
-<div class="row item-option topic-option" data-id="{{encode($data->id)}}">
+<div class="row item-option topic-option" data-id="{{encode($data->id)}}" data-getType="{{$getType or ''}}">
     <div class="col-md-9">
         <!-- BEGIN PORTLET-->
         <div class="box panel-default box-default">
@@ -41,7 +41,8 @@
 
 
             <div class="box-footer">
-                <a class="margin">
+
+                <a class="margin favor-btn" data-num="{{$data->favor_num}}" role="button">
                     @if(Auth::check())
                         @if($data->others->contains('type', 1))
                             <span class="favor-this-cancel"><i class="fa fa-thumbs-up text-red"></i>
@@ -56,7 +57,7 @@
                 </a>
 
 
-                <a class="margin">
+                <a class="margin collect-btn" data-num="{{$data->collect_num}}" role="button">
                     @if(Auth::check())
                         @if($data->user_id != Auth::id())
                             @if(count($data->collections))
