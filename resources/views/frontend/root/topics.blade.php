@@ -1,6 +1,6 @@
 @extends('frontend.layout.layout')
 
-@section('title','匿名者')
+@section('title','话题社')
 @section('header','')
 @section('description','')
 
