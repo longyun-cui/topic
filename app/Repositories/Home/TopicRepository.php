@@ -62,8 +62,9 @@ class TopicRepository {
     // 返回添加视图
     public function view_create()
     {
-        return view('home.topic.edit');
+        return view('home.topic.edit')->with(['menu_topic_edit'=>'active']);
     }
+
     // 返回编辑视图
     public function view_edit()
     {
@@ -238,8 +239,6 @@ class TopicRepository {
             return response_fail([],'禁用失败，请重试');
         }
     }
-
-
 
 
 

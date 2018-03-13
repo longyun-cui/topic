@@ -31,7 +31,7 @@ class TopicController extends Controller
     // 列表
     public function viewList()
     {
-        if(request()->isMethod('get')) return view('home.topic.list');
+        if(request()->isMethod('get')) return view('home.topic.list')->with(['menu_topic_list'=>'active']);
         else if(request()->isMethod('post')) return $this->repo->get_list_datatable(request()->all());
     }
 

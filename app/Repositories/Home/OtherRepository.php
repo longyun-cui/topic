@@ -54,13 +54,19 @@ class OtherRepository {
         if($limit == -1) $list = $query->get();
         else $list = $query->skip($skip)->take($limit)->get();
 
-        foreach ($list as $k => $v)
+        foreach($list as $k => $v)
         {
             $list[$k]->encode_id = encode($v->id);
-            if($list[$k]->topic)
+            if($v->topic)
             {
                 $list[$k]->topic->encode_id = encode($v->topic->id);
                 $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+
+                if($list[$k]->topic->is_anonymous)
+                {
+//                    $list[$k]->topic->user->encode_id = 0;
+//                    $list[$k]->topic->user->name = '';
+                }
             }
         }
         return datatable_response($list, $draw, $total);
@@ -131,13 +137,19 @@ class OtherRepository {
         if($limit == -1) $list = $query->get();
         else $list = $query->skip($skip)->take($limit)->get();
 
-        foreach ($list as $k => $v)
+        foreach($list as $k => $v)
         {
             $list[$k]->encode_id = encode($v->id);
-            if($list[$k]->topic)
+            if($v->topic)
             {
                 $list[$k]->topic->encode_id = encode($v->topic->id);
                 $list[$k]->topic->user->encode_id = encode($v->topic->user->id);
+
+                if($v->topic->is_anonymous)
+                {
+//                    $v->topic->user->encode_id = 0;
+//                    $v->topic->user->name = '';
+                }
             }
         }
         return datatable_response($list, $draw, $total);

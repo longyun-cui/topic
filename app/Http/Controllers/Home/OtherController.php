@@ -33,7 +33,7 @@ class OtherController extends Controller
     // 收藏列表
     public function collect_viewList()
     {
-        if(request()->isMethod('get')) return view('home.others.collect');
+        if(request()->isMethod('get')) return view('home.others.collect')->with(['menu_others_collect'=>'active']);
         else if(request()->isMethod('post')) return $this->repo->collect_get_list_datatable(request()->all());
     }
     // 收藏【删除】
@@ -47,7 +47,7 @@ class OtherController extends Controller
     // 收藏列表
     public function favor_viewList()
     {
-        if(request()->isMethod('get')) return view('home.others.favor');
+        if(request()->isMethod('get')) return view('home.others.favor')->with(['menu_others_favor'=>'active']);
         else if(request()->isMethod('post')) return $this->repo->favor_get_list_datatable(request()->all());
     }
     // 收藏【删除】

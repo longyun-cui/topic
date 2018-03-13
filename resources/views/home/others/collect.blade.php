@@ -118,7 +118,17 @@
                         'data': 'user',
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return row.topic == null ? '' : '<a target="_blank" href="/u/'+row.topic.user.encode_id+'">'+row.topic.user.name+'</a>';
+                            if(row.topic == null) return '';
+                            else
+                            {
+                                if(row.topic.is_anonymous) {
+                                    return '匿名话题';
+                                }
+                                else {
+                                    return '<a target="_blank" href="/u/'+row.topic.user.encode_id+'">'+row.topic.user.name+'</a>';
+                                }
+                            }
+//                            return row.topic == null ? '' : '<a target="_blank" href="/u/'+row.topic.user.encode_id+'">'+row.topic.user.name+'</a>';
                         }
                     },
                     {

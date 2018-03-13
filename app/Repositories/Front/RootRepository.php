@@ -145,13 +145,13 @@ class RootRepository {
 
         if(Auth::check())
         {
-            $user = Auth::user();
-            $user_id = $user->id;
+            $me = Auth::user();
+            $me_id = $me->id;
             $datas = Topic::with([
                 'user',
                 'communications'=>function($query) { $query->with(['user'])->limit(10)->orderBy('id','desc'); },
-                'collections'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); },
-                'others'=>function($query) use ($user_id) { $query->where(['user_id' => $user_id]); }
+                'collections'=>function($query) use ($me_id) { $query->where(['user_id' => $me_id]); },
+                'others'=>function($query) use ($me_id) { $query->where(['user_id' => $me_id]); }
             ])->where(['user_id'=>$user_decode,'active'=>1,'is_anonymous'=>0])
                 ->orderBy('id','desc')->paginate(20);
         }

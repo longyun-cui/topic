@@ -303,23 +303,23 @@ desired effect
 
                 <li class="header">话题</li>
 
-                <li class="treeview">
+                <li class="treeview {{$menu_topic_list or ''}}">
                     <a href="{{url('/home/topic/list')}}"><i class="fa fa-table text-green"></i> <span>话题列表</span></a>
                 </li>
 
-                <li class="treeview">
+                <li class="treeview {{$menu_topic_edit or ''}}">
                     <a href="{{url('/home/topic/create')}}"><i class="fa fa-plus text-green"></i> <span>添加话题</span></a>
                 </li>
 
 
                 <li class="header">其他</li>
 
-                <li class="treeview">
+                <li class="treeview {{$menu_others_collect or ''}}">
                     <a href="{{url('/home/collect/list')}}"><i class="fa fa-heart text-red"></i> <span>我的收藏</span></a>
                 </li>
 
-                <li class="treeview">
-                    <a href="{{url('/home/favor/list')}}"><i class="fa fa-thumbs-up text-red"></i> <span>我的赞</span></a>
+                <li class="treeview {{$menu_others_favor or ''}}">
+                    <a href="{{url('/home/favor/list')}}"><i class="fa fa-thumbs-up text-red"></i> <span>点赞</span></a>
                 </li>
 
 
