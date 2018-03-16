@@ -10,8 +10,8 @@
             ],
 
             'online' => [
-                'root' => 'http://qingbo.date',
-                'cdn' => 'http://cdn.qingbo.date',
+                'root' => 'http://topicbus.cn',
+                'cdn' => 'http://cdn.topicbus.cn',
             ],
         ],
 

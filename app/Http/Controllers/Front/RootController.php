@@ -46,16 +46,7 @@ class RootController extends Controller
     }
 
 
-
-    public function topic_favor_save()
-    {
-        return $this->repo->topic_favor_save(request()->all());
-    }
-    public function topic_favor_cancel()
-    {
-        return $this->repo->topic_favor_cancel(request()->all());
-    }
-
+    // 收藏
     public function topic_collect_save()
     {
         return $this->repo->topic_collect_save(request()->all());
@@ -66,14 +57,51 @@ class RootController extends Controller
     }
 
 
-    public function topic_comment_save()
+
+    // 点赞
+    public function topic_favor_save()
     {
-        return $this->repo->topic_comment_save(request()->all());
+        return $this->repo->topic_favor_save(request()->all());
+    }
+    public function topic_favor_cancel()
+    {
+        return $this->repo->topic_favor_cancel(request()->all());
     }
 
-    public function topic_comment_get()
+
+
+    // 评论
+    public function item_comment_save()
     {
-        return $this->repo->topic_comment_get(request()->all());
+        return $this->repo->item_comment_save(request()->all());
+    }
+    public function item_comment_get()
+    {
+        return $this->repo->item_comment_get(request()->all());
+    }
+
+
+
+    // 回复
+    public function item_reply_save()
+    {
+        return $this->repo->item_reply_save(request()->all());
+    }
+    public function item_reply_get()
+    {
+        return $this->repo->item_reply_get(request()->all());
+    }
+
+
+
+    // 评论点赞
+    public function item_comment_favor_save()
+    {
+        return $this->repo->item_comment_favor_save(request()->all());
+    }
+    public function item_comment_favor_cancel()
+    {
+        return $this->repo->item_comment_favor_cancel(request()->all());
     }
 
 

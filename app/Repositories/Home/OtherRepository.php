@@ -45,6 +45,8 @@ class OtherRepository {
             $order = $post_data['order'][0];
             $order_column = $order['column'];
             $order_dir = $order['dir'];
+            $order_dir = $order['dir'];
+            $order_dir = $order['dir'];
 
             $field = $columns[$order_column]["data"];
             $query->orderBy($field, $order_dir);

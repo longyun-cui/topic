@@ -22,13 +22,17 @@ class AuthRepository {
     {
         $messages = [
             'name.required' => '请填写用户名',
+            'anonymous_name.required' => '请填写匿名时花名',
+            'anonymous_name.unique' => '花名已存在，请更换花名',
             'captcha.required' => '请输入验证码',
             'captcha.captcha' => '验证码有误',
+            'email.required' => '请填写邮箱',
             'email.unique' => '邮箱已存在，请更换邮箱',
         ];
         $v = Validator::make($post_data, [
             'captcha' => 'required|captcha',
             'name' => 'required',
+            'anonymous_name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'password_confirm' => 'required'
@@ -41,6 +45,7 @@ class AuthRepository {
 
 
         $name = $post_data['name'];
+        $anonymous_name = $post_data['anonymous_name'];
         $email = $post_data['email'];
         $password = $post_data['password'];
         $password_confirm = $post_data['password_confirm'];
@@ -52,6 +57,7 @@ class AuthRepository {
                 // 注册超级管理员
                 $user = new User;
                 $user_create['name'] = $name;
+                $user_create['anonymous_name'] = $anonymous_name;
                 $user_create['email'] = $email;
                 $user_create['password'] = password_encode($password);
                 $bool = $user->fill($user_create)->save();

@@ -1,4 +1,4 @@
-<div class="row item-option topic-option" data-id="{{encode($data->id)}}" data-getType="{{$getType or ''}}">
+<div class="row item-piece item-option topic-option" data-id="{{encode($data->id)}}" data-getType="{{$getType or ''}}">
     <div class="col-md-9">
         <!-- BEGIN PORTLET-->
         <div class="box panel-default box-default">
@@ -7,14 +7,15 @@
                 <h3 class="box-title">
                     <a href="{{url('/topic/'.encode($data->id))}}">{{$data->title or ''}}</a>
                 </h3>
+                来自
                 @if($data->is_anonymous != 1)
-                    <span>来自 <a href="{{url('/u/'.encode($data->user->id))}}">{{$data->user->name or ''}}</a></span>
+                    <span><a href="{{url('/u/'.encode($data->user->id))}}">{{$data->user->name or ''}}</a></span>
                 @else
-                    <span>
-                           【匿名@if($data->type == 1)话题@elseif($data->type == 2)辩题@endif】
-                    <a href="javascript:void(0)"></a></span>
+                    <span><a href="javascript:void(0)">{{$data->user->anonymous_name or ''}}(匿名)</a></span>
+                    {{--【匿名@if($data->type == 1)话题@elseif($data->type == 2)辩题@endif】--}}
                 @endif
-                <span class="pull-right"><a class="show-menu" style="cursor:pointer"></a></span>
+
+                <span class="pull-right"><a class="show-menu" role="button"></a></span>
                 <span class="pull-right text-muted disabled">{{ $data->created_at->format('n月j日 H:i') }}</span>
             </div>
 
@@ -40,6 +41,7 @@
             @endif
 
 
+            {{--tools--}}
             <div class="box-footer">
 
                 <a class="margin favor-btn" data-num="{{$data->favor_num}}" role="button">
@@ -80,6 +82,7 @@
                 <a class="margin @if($getType == 'items') comment-toggle @endif"><i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif</a>
 
             </div>
+
 
             {{--添加评论--}}
             <div class="box-body comment-container" @if($getType == 'items') style="display:none; @endif" >
