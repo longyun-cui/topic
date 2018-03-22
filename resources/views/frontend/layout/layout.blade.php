@@ -126,7 +126,7 @@ desired effect
             </a>
 
             <div class="navbar-custom-menu" style="height:50px;float:left;">
-                    <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon.png" class="img-icon" alt="Image"> <b>话题社</b></a></span>
+                    <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon_transparent.png" class="img-icon" alt="Image"> <b>话题社</b></a></span>
             </div>
 
             <div class="navbar-custom-menu" style="float:left;">

@@ -27,10 +27,16 @@
 
 .more-box {padding:0;}
 
+
+.item-piece {margin-bottom:8px;}
+
 .item-piece .pull-left {margin-right:12px;}
 .item-piece .pull-right {margin-left:12px;}
-
 .item-piece .form-group {margin-bottom:0;}
+
+.item-entity-container {border-bottom:1px solid #eee;background:#fff;}
+.item-title-container a {color:#5595cc;font-size:16px;}
+.item-title-container .text-red {color:#e7072e}
 
 
 article {max-height:24px;}
@@ -52,4 +58,5 @@ article {max-height:24px;}
 .btn-group { ackground-color:inherit;}
 .comment-choice-container .checkbox, .radio {margin-top:0;margin-bottom:0;}
 .btn-more {border:1px solid #f4f4f4;background:#f8f8f8;}
+
 

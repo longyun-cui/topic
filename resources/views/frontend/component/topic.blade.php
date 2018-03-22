@@ -1,14 +1,14 @@
-<div class="row item-piece item-option topic-option" style="margin-bottom:16px;"
+<div class="row item-piece item-option topic-option"
      data-id="{{encode($data->id)}}"
      data-getType="{{$getType or ''}}"
 >
-    <div class="col-md-8 col-md-offset-2" style="border-bottom:1px solid #eee;background:#fff;">
+    <div class="col-md-8 col-md-offset-2 item-entity-container">
         <!-- BEGIN PORTLET-->
         <div class="boxe panel-default box-default">
 
-            <div class="box-body _with-border _panel-heading">
+            <div class="box-body item-title-container">
                 <span>
-                    <a href="{{url('/topic/'.encode($data->id))}}" style="font-size:16px;">{{$data->title or ''}}</a>
+                    <a href="{{url('/topic/'.encode($data->id))}}" >{{$data->title or ''}}</a>
                 </span>
             </div>
 
@@ -25,11 +25,11 @@
             </div>
 
             @if($data->type == 2)
-                <div class="box-body with-border panel- text-muted" style="padding-bottom:0;">
+                <div class="box-body text-muted" style="padding-bottom:0;">
                     <div class="colo-md-12"> <span class="text-primary">【正方】 </span> {{ $data->positive or '' }} </div>
                 </div>
-                <div class="box-body with-border panel- text-muted" style="padding-top:0;padding-bottom:0;">
-                    <div class="colo-md-12"> <b class="text-danger">【反方】 </b> {{ $data->negative or '' }} </div>
+                <div class="box-body text-muted" style="padding-top:0;padding-bottom:0;">
+                    <div class="colo-md-12"> <span class="text-danger">【反方】 </span> {{ $data->negative or '' }} </div>
                 </div>
             @endif
 
@@ -47,7 +47,7 @@
 
 
             {{--tools--}}
-            <div class="box-body">
+            <div class="box-body item-tools-container">
 
                 {{--点赞--}}
                 <a class="margin favor-btn" data-num="{{$data->favor_num}}" role="button">
