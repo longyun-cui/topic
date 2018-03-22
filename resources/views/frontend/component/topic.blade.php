@@ -1,13 +1,18 @@
-<div class="row item-piece item-option topic-option" data-id="{{encode($data->id)}}" data-getType="{{$getType or ''}}">
-    <div class="col-md-9">
+<div class="row item-piece item-option topic-option" style="margin-bottom:16px;"
+     data-id="{{encode($data->id)}}"
+     data-getType="{{$getType or ''}}"
+>
+    <div class="col-md-8 col-md-offset-2" style="border-bottom:1px solid #eee;background: #f8f8f8;">
         <!-- BEGIN PORTLET-->
-        <div class="box panel-default box-default">
+        <div class="boxe panel-default box-default">
 
-            <div class="box-header _with-border _panel-heading" style="margin:16px 0 8px;">
-                <h3 class="box-title">
+            <div class="box-body _with-border _panel-heading">
+                <span>
                     <a href="{{url('/topic/'.encode($data->id))}}">{{$data->title or ''}}</a>
-                </h3>
-                来自
+                </span>
+            </div>
+
+            <div class="box-body info-container">
                 @if($data->is_anonymous != 1)
                     <span><a href="{{url('/u/'.encode($data->user->id))}}">{{$data->user->name or ''}}</a></span>
                 @else
@@ -16,14 +21,14 @@
                 @endif
 
                 <span class="pull-right"><a class="show-menu" role="button"></a></span>
-                <span class="pull-right text-muted disabled">{{ $data->created_at->format('n月j日 H:i') }}</span>
+                <span class=" text-muted disabled"> • {{ $data->created_at->format('n月j日 H:i') }}</span>
             </div>
 
             @if($data->type == 2)
-                <div class="box-body with-border panel-heading text-muted">
+                <div class="box-body with-border panel- text-muted" style="padding-bottom:0;">
                     <div class="colo-md-12"> <b class="text-primary">【正方】 </b> {{ $data->positive or '' }} </div>
                 </div>
-                <div class="box-header with-border panel-heading">
+                <div class="box-header with-border panel- text-muted" style="padding-top:0;">
                     <div class="colo-md-12"> <b class="text-danger">【反方】 </b> {{ $data->negative or '' }} </div>
                 </div>
             @endif
@@ -36,14 +41,15 @@
 
             @if(!empty($data->content))
                 <div class="box-body">
-                    <div class="colo-md-12"> {!! $data->content or '' !!} </div>
+                    <article class="colo-md-12"> {!! $data->content or '' !!} </article>
                 </div>
             @endif
 
 
             {{--tools--}}
-            <div class="box-footer">
+            <div class="box-body">
 
+                {{--点赞--}}
                 <a class="margin favor-btn" data-num="{{$data->favor_num}}" role="button">
                     @if(Auth::check())
                         @if($data->others->contains('type', 1))
@@ -58,7 +64,7 @@
                     @if($data->favor_num) {{$data->favor_num}} @endif </span>
                 </a>
 
-
+                {{--收藏--}}
                 <a class="margin collect-btn" data-num="{{$data->collect_num}}" role="button">
                     @if(Auth::check())
                         @if($data->user_id != Auth::id())
@@ -77,9 +83,13 @@
                     @if($data->collect_num) {{$data->collect_num}} @endif </span>
                 </a>
 
-                <a class="margin"><i class="fa fa-share"></i> @if($data->share_num) {{$data->share_num}} @endif</a>
+                {{--分享--}}
+                <a class="margin _none"><i class="fa fa-share"></i> @if($data->share_num) {{$data->share_num}} @endif</a>
 
-                <a class="margin @if($getType == 'items') comment-toggle @endif"><i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif</a>
+                {{--评论--}}
+                <a class="margin @if($getType == 'items') comment-toggle @endif">
+                    <i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif
+                </a>
 
             </div>
 
@@ -156,15 +166,15 @@
                             <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" checked="checked"
-                                               class="get-comments get-comments-default" data-getSort="all"> 全部评论
+                                        <input type="radio" name="comments-get-{{encode($data->id)}}" checked="checked"
+                                               class="comments-get comments-get-default" data-getSort="all"> 全部评论
                                     </label>
                                 </div>
                             </button>
                             <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" class="get-comments" data-getSort="positive">
+                                        <input type="radio" name="comments-get-{{encode($data->id)}}" class="comments-get" data-getSort="positive">
                                         <b class="text-primary">只看【正方 <i class="fa fa-thumbs-o-up"></i>】</b>
                                     </label>
                                 </div>
@@ -172,7 +182,7 @@
                             <button type="button" class="btn">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="get-comments-{{encode($data->id)}}" class="get-comments" data-getSort="negative">
+                                        <input type="radio" name="comments-get-{{encode($data->id)}}" class="comments-get" data-getSort="negative">
                                         <b class="text-danger">只看【反方 <i class="fa fa-thumbs-o-up"></i>】</b>
                                     </label>
                                 </div>
@@ -181,7 +191,7 @@
                     </div>
                 </div>
                 @else
-                    <input type="hidden" class="get-comments get-comments-default" data-type="all">
+                    <input type="hidden" class="comments-get comments-get-default" data-type="all">
                 @endif
 
                 {{--评论列表--}}

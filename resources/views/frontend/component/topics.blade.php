@@ -144,24 +144,24 @@
                     <div class="box-body comment-choice-container">
                         <div class="form-group form-type">
                             <div class="btn-group">
-                                <button type="button" class="btn get-comments" data-type="all">
+                                <button type="button" class="btn comments-get" data-type="all">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id)}}" checked="checked"> 全部评论
+                                            <input type="radio" name="comments-get-{{encode($data->id)}}" checked="checked"> 全部评论
                                         </label>
                                     </div>
                                 </button>
-                                <button type="button" class="btn get-comments" data-type="positive">
+                                <button type="button" class="btn comments-get" data-type="positive">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id)}}" value="1"> 只看正方
+                                            <input type="radio" name="comments-get-{{encode($data->id)}}" value="1"> 只看正方
                                         </label>
                                     </div>
                                 </button>
-                                <button type="button" class="btn get-comments" data-type="negative">
+                                <button type="button" class="btn comments-get" data-type="negative">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="get-comments-{{encode($data->id)}}" value="2"> 只看反方
+                                            <input type="radio" name="comments-get-{{encode($data->id)}}" value="2"> 只看反方
                                         </label>
                                     </div>
                                 </button>

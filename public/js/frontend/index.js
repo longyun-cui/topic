@@ -175,7 +175,7 @@ jQuery( function ($) {
         item_option.find(".comment-container").toggle();
         if(!item_option.find(".comment-container").is(":hidden"))
         {
-            item_option.find(".get-comments-default").click();
+            item_option.find(".comments-get-default").click();
         }
     });
     // 发布评论
@@ -201,7 +201,7 @@ jQuery( function ($) {
 
 
     // 查看评论
-    $(".item-option").off("click",".get-comments").on('click', ".get-comments", function() {
+    $(".item-option").off("click",".comments-get").on('click', ".comments-get", function() {
         var that = $(this);
         var item_option = $(this).parents('.item-option');
         var getSort = that.attr('data-getSort');

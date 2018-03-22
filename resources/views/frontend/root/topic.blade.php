@@ -34,7 +34,7 @@
 @section('js')
 <script>
     $(function() {
-        $(".get-comments-default").click();
+        $(".comments-get-default").click();
     });
 </script>
 @endsection

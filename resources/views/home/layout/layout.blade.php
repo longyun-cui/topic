@@ -323,6 +323,42 @@ desired effect
                 </li>
 
 
+
+                <li class="header"><i class="fa fa-envelope"></i></li>
+
+                <li class="treeview {{$menu_notification_comment or ''}}">
+                    <a href="{{url('/home/notification/comment')}}">
+                        <i class="fa fa-bell"></i>消息
+                        <span class="pull-right-container">
+                            <small class="label pull-right bg-red">{{$notification_count or ''}}</small>
+                            <small class="label pull-right bg-blue _none">17</small>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="treeview {{$menu_notification_favor or ''}} _none">
+                    <a href="{{url('/home/notification/favor')}}"><i class="fa fa-dot-circle-o"></i>点赞</a>
+                </li>
+
+                <li class="treeview {{$menu_notification_comment or ''}} {{$menu_notification_favor or ''}} _none">
+                    <a href="">
+                        <i class="fa fa-envelope"></i> <span>消息</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{$menu_notification_comment or ''}}">
+                            <a href="{{url('/home/notification/comment')}}"><i class="fa fa-dot-circle-o"></i>评论</a>
+                        </li>
+                        <li class="{{$menu_notification_favor or ''}}">
+                            <a href="{{url('/home/notification/favor')}}"><i class="fa fa-dot-circle-o"></i>点赞</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
                 <li class="header">匿名站</li>
 
                 <li class="treeview">

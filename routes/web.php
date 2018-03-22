@@ -92,7 +92,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     /*
      * 需要登录
      */
-    Route::group(['middleware' => 'home'], function () {
+    Route::group(['middleware' => ['home','notification']], function () {
 
         $controller = 'HomeController';
 
@@ -143,6 +143,16 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
             Route::match(['get','post'], 'list', $controller.'@favor_viewList');
             Route::post('delete', $controller.'@favor_deleteAction');
         });
+
+        // 消息
+        Route::group(['prefix' => 'notification'], function () {
+
+            $controller = 'NotificationController';
+
+            Route::get('comment', $controller.'@comment');
+            Route::get('favor', $controller.'@favor');
+        });
+
     });
 
 });

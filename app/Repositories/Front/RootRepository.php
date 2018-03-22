@@ -4,6 +4,7 @@ namespace App\Repositories\Front;
 use App\User;
 use App\Models\Topic;
 use App\Models\Communication;
+use App\Models\Notification;
 use App\Models\Pivot_User_Topic;
 use App\Models\Pivot_User_Collection;
 
@@ -365,6 +366,30 @@ class RootRepository {
 
                     $topic->increment('favor_num');
 
+                    // 记录 insert.communication
+                    $insert['type'] = 3;
+                    $insert['user_id'] = $user->id;
+                    $insert['topic_id'] = $topic_decode;
+
+                    $communication = new Communication;
+                    $bool = $communication->fill($insert)->save();
+                    if(!$bool) throw new Exception("insert--communication--fail");
+
+                    // 通知对方
+                    if($topic->user_id != $user->id)
+                    {
+                        $notification_insert['type'] = 8;
+                        $notification_insert['sort'] = 3;
+                        $notification_insert['user_id'] = $topic->user_id;
+                        $notification_insert['source_id'] = $user->id;
+                        $notification_insert['topic_id'] = $topic_decode;
+                        $notification_insert['comment_id'] = $communication->id;
+
+                        $notification = new Notification;
+                        $bool = $notification->fill($notification_insert)->save();
+                        if(!$bool) throw new Exception("insert--notification--fail");
+                    }
+
                     $return = [];
 //                    $return['html'] = $this->view_item_html($topic_decode);
 
@@ -513,6 +538,21 @@ class RootRepository {
                 $communication = new Communication;
                 $bool = $communication->fill($insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
+
+                // 通知对方
+                if($topic->user_id != $user->id)
+                {
+                    $notification_insert['type'] = 8;
+                    $notification_insert['sort'] = 1;
+                    $notification_insert['user_id'] = $topic->user_id;
+                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['topic_id'] = $topic_decode;
+                    $notification_insert['comment_id'] = $communication->id;
+
+                    $notification = new Notification;
+                    $bool = $notification->fill($notification_insert)->save();
+                    if(!$bool) throw new Exception("insert--notification--fail");
+                }
 
                 $html["html"] = view('frontend.component.comment')->with("comment",$communication)->__toString();
 
@@ -721,6 +761,22 @@ class RootRepository {
                 $bool = $communication->fill($insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
 
+                // 通知对方
+                if($comment->user_id != $user->id)
+                {
+                    $notification_insert['type'] = 8;
+                    $notification_insert['sort'] = 2;
+                    $notification_insert['user_id'] = $comment->user_id;
+                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['topic_id'] = $topic_decode;
+                    $notification_insert['comment_id'] = $communication->id;
+                    $notification_insert['reply_id'] = $comment->id;
+
+                    $notification = new Notification;
+                    $bool = $notification->fill($notification_insert)->save();
+                    if(!$bool) throw new Exception("insert--notification--fail");
+                }
+
                 $html["html"] = view('frontend.component.reply')->with("reply",$communication)->__toString();
 
                 DB::commit();
@@ -860,6 +916,22 @@ class RootRepository {
                 $communication = new Communication;
                 $bool = $communication->fill($insert)->save();
                 if(!$bool) throw new Exception("insert--communication--fail");
+
+                // 通知对方
+                if($comment->user_id != $user->id)
+                {
+                    $notification_insert['type'] = 8;
+                    $notification_insert['sort'] = 5;
+                    $notification_insert['user_id'] = $comment->user_id;
+                    $notification_insert['source_id'] = $user->id;
+                    $notification_insert['topic_id'] = $topic_decode;
+                    $notification_insert['comment_id'] = $communication->id;
+                    $notification_insert['reply_id'] = $comment->id;
+
+                    $notification = new Notification;
+                    $bool = $notification->fill($notification_insert)->save();
+                    if(!$bool) throw new Exception("insert--notification--fail");
+                }
 
                 DB::commit();
                 return response_success();
