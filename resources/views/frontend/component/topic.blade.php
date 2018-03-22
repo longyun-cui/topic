@@ -6,13 +6,13 @@
         <!-- BEGIN PORTLET-->
         <div class="boxe panel-default box-default">
 
-            <div class="box-body item-title-container">
+            <div class="box-body item-title-row">
                 <span>
                     <a href="{{url('/topic/'.encode($data->id))}}" >{{$data->title or ''}}</a>
                 </span>
             </div>
 
-            <div class="box-body info-container">
+            <div class="box-body item-info-row">
                 @if($data->is_anonymous != 1)
                     <span><a href="{{url('/u/'.encode($data->user->id))}}">{{$data->user->name or ''}}</a></span>
                 @else
@@ -25,29 +25,27 @@
             </div>
 
             @if($data->type == 2)
-                <div class="box-body text-muted" style="padding-bottom:0;">
+                <div class="box-body text-muted">
                     <div class="colo-md-12"> <span class="text-primary">【正方】 </span> {{ $data->positive or '' }} </div>
-                </div>
-                <div class="box-body text-muted" style="padding-top:0;padding-bottom:0;">
                     <div class="colo-md-12"> <span class="text-danger">【反方】 </span> {{ $data->negative or '' }} </div>
                 </div>
             @endif
 
             @if(!empty($data->description))
-                <div class="box-body text-muted">
+                <div class="box-body text-muted item-description-row">
                     <div class="colo-md-12"> {{ $data->description or '' }} </div>
                 </div>
             @endif
 
             @if(!empty($data->content))
-                <div class="box-body" style="padding-bottom:0;">
+                <div class="box-body item-content-row" style="padding-bottom:0;">
                     <article class="colo-md-12"> {!! $data->content or '' !!} </article>
                 </div>
             @endif
 
 
             {{--tools--}}
-            <div class="box-body item-tools-container">
+            <div class="box-footer item-tools-row item-tools-container">
 
                 {{--点赞--}}
                 <a class="margin favor-btn" data-num="{{$data->favor_num}}" role="button">
