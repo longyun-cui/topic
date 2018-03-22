@@ -2,13 +2,13 @@
      data-id="{{encode($data->id)}}"
      data-getType="{{$getType or ''}}"
 >
-    <div class="col-md-8 col-md-offset-2" style="border-bottom:1px solid #eee;background: #f8f8f8;">
+    <div class="col-md-8 col-md-offset-2" style="border-bottom:1px solid #eee;background:#fff;">
         <!-- BEGIN PORTLET-->
         <div class="boxe panel-default box-default">
 
             <div class="box-body _with-border _panel-heading">
                 <span>
-                    <a href="{{url('/topic/'.encode($data->id))}}">{{$data->title or ''}}</a>
+                    <a href="{{url('/topic/'.encode($data->id))}}" style="font-size:16px;">{{$data->title or ''}}</a>
                 </span>
             </div>
 
@@ -26,9 +26,9 @@
 
             @if($data->type == 2)
                 <div class="box-body with-border panel- text-muted" style="padding-bottom:0;">
-                    <div class="colo-md-12"> <b class="text-primary">【正方】 </b> {{ $data->positive or '' }} </div>
+                    <div class="colo-md-12"> <span class="text-primary">【正方】 </span> {{ $data->positive or '' }} </div>
                 </div>
-                <div class="box-header with-border panel- text-muted" style="padding-top:0;">
+                <div class="box-body with-border panel- text-muted" style="padding-top:0;padding-bottom:0;">
                     <div class="colo-md-12"> <b class="text-danger">【反方】 </b> {{ $data->negative or '' }} </div>
                 </div>
             @endif
@@ -40,7 +40,7 @@
             @endif
 
             @if(!empty($data->content))
-                <div class="box-body">
+                <div class="box-body" style="padding-bottom:0;">
                     <article class="colo-md-12"> {!! $data->content or '' !!} </article>
                 </div>
             @endif
@@ -84,10 +84,10 @@
                 </a>
 
                 {{--分享--}}
-                <a class="margin _none"><i class="fa fa-share"></i> @if($data->share_num) {{$data->share_num}} @endif</a>
+                <a class="margin _none" role="button"><i class="fa fa-share"></i> @if($data->share_num) {{$data->share_num}} @endif</a>
 
                 {{--评论--}}
-                <a class="margin @if($getType == 'items') comment-toggle @endif">
+                <a class="margin @if($getType == 'items') comment-toggle @endif" role="button">
                     <i class="fa fa-commenting-o"></i> @if($data->comment_num) {{$data->comment_num}} @endif
                 </a>
 

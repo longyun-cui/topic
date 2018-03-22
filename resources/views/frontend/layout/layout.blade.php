@@ -125,13 +125,8 @@ desired effect
                 <span class="sr-only">Toggle navigation</span>
             </a>
 
-            <div class="navbar-custom-menu" style="float:left;">
-                <ul class="nav navbar-nav">
-
-                    <li><img src="/favicon.png" class="img-icon" alt="Image"></li>
-                    <li><a href="javascript:void(0)"> 话题社</a></li>
-
-                </ul>
+            <div class="navbar-custom-menu" style="height:50px;float:left;">
+                    <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon.png" class="img-icon" alt="Image"> <b>话题社</b></a></span>
             </div>
 
             <div class="navbar-custom-menu" style="float:left;">

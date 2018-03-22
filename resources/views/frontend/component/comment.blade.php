@@ -68,7 +68,7 @@
 
         @if($comment->dialogs_count)
             <div class="col-md-12 more-box" style="margin-top:4px;">
-                <button type="button" class="btn btn-block btn-flat btn-default replies-more"
+                <button type="button" class="btn btn-block btn-flat btn-more replies-more"
                         data-more="{{$comment->dialog_more}}"
                         data-maxId="{{$comment->dialog_max_id}}"
                         data-minId="{{$comment->dialog_min_id}}"

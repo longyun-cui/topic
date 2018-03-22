@@ -9,7 +9,7 @@
 
 <div class="col-md-12" style="margin-top:16px;padding:0;">
     <a href="{{url('/topic/'.encode($data->id))}}" target="_blank">
-        <button type="button" class="btn btn-block btn-flat btn-default"
+        <button type="button" class="btn btn-block btn-flat btn-more"
             data-getType="all"
         >更多</button>
     </a>

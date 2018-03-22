@@ -30,7 +30,6 @@
     .comment-entity-container {border-top:2px solid #ddd;}
     .comment-piece {border-bottom:1px solid #eee;}
     .comment-piece:first-child {}
-    article {max-height:22px;}
 </style>
 @endsection
 
