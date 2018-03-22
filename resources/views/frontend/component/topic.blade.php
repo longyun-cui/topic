@@ -2,9 +2,9 @@
      data-id="{{encode($data->id)}}"
      data-getType="{{$getType or ''}}"
 >
-    <div class="col-md-8 col-md-offset-2 item-entity-container">
+    <div class="col-md-8 col-md-offset-2">
         <!-- BEGIN PORTLET-->
-        <div class="boxe panel-default box-default">
+        <div class="boxe panel-default box-default item-entity-container">
 
             <div class="box-body item-title-row">
                 <span>
@@ -25,20 +25,20 @@
             </div>
 
             @if($data->type == 2)
-                <div class="box-body text-muted">
+                <div class="box-body item-support-row text-muted">
                     <div class="colo-md-12"> <span class="text-primary">【正方】 </span> {{ $data->positive or '' }} </div>
                     <div class="colo-md-12"> <span class="text-danger">【反方】 </span> {{ $data->negative or '' }} </div>
                 </div>
             @endif
 
             @if(!empty($data->description))
-                <div class="box-body text-muted item-description-row">
+                <div class="box-body item-description-row text-muted">
                     <div class="colo-md-12"> {{ $data->description or '' }} </div>
                 </div>
             @endif
 
             @if(!empty($data->content))
-                <div class="box-body item-content-row" style="padding-bottom:0;">
+                <div class="box-body item-content-row">
                     <article class="colo-md-12"> {!! $data->content or '' !!} </article>
                 </div>
             @endif
