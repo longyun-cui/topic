@@ -1,10 +1,10 @@
 @extends('frontend.layout.layout')
 
-@section('title') {{$data->name or ''}} @endsection
+@section('title') {{ $data->name or '' }}的主页 @endsection
 @section('header','')
 @section('description','')
 
-@section('header_title') {{ $data->name or '' }} @endsection
+@section('header_title')  @endsection
 
 @section('content')
 
@@ -12,12 +12,32 @@
         <input type="hidden" id="" value="{{$encode or ''}}" readonly>
     </div>
 
-    {{--作者--}}
-    @foreach($topics as $num => $data)
-        @include('frontend.component.topic')
-    @endforeach
+    <div class="container">
 
-    {{ $topics->links() }}
+        <div class="col-sm-12 col-md-9 container-body-left">
+
+            <div class="box-body  visible-xs" style="margin-bottom:16px;background:#fff;">
+                <b>{{ $data->name or '' }}的主页</b>
+            </div>
+
+            {{--@foreach($topics as $num => $item)--}}
+                {{--@include('frontend.component.topic')--}}
+            {{--@endforeach--}}
+            @include('frontend.component.topic')
+
+            {{ $topics->links() }}
+
+        </div>
+
+        <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
+
+            <div class="box-body" style="background:#fff;">
+                <b>{{ $data->name or '' }}</b> 的话题
+            </div>
+
+        </div>
+
+    </div>
 
 @endsection
 

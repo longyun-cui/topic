@@ -11,6 +11,14 @@ class Topic extends Model
         'is_shared', 'visit_num', 'share_num'
     ];
     protected $dateFormat = 'U';
+//    protected $dates = ['created_at', 'updated_at', 'disabled_at'];
+
+
+    public function getDates()
+    {
+        return array('created_at');
+//        return array(); // 原形返回；
+    }
 
 
     // 用户信息

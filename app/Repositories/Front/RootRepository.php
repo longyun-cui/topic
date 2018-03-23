@@ -12,7 +12,6 @@ use App\Repositories\Common\CommonRepository;
 
 use Response, Auth, Validator, DB, Exception, Blade;
 use QrCode;
-use function Sodium\increment;
 
 class RootRepository {
 
@@ -75,7 +74,7 @@ class RootRepository {
                 ->orderBy('id','desc')->paginate(20);
         }
 //        dd($datas->toArray());
-        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_all'=>'active']);
+        return view('frontend.root.topics')->with(['getType'=>'items','topics'=>$datas,'menu_all'=>'active']);
     }
 
 
@@ -102,7 +101,7 @@ class RootRepository {
             ])->where(['active'=>1,'type'=>2])
                 ->orderBy('id','desc')->paginate(20);
         }
-        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_debates'=>'active']);
+        return view('frontend.root.topics')->with(['getType'=>'items','topics'=>$datas,'menu_debates'=>'active']);
     }
 
 
@@ -130,7 +129,7 @@ class RootRepository {
             ])->where(['active'=>1,'is_anonymous'=>1])
                 ->orderBy('id','desc')->paginate(20);
         }
-        return view('frontend.root.topics')->with(['getType'=>'items','datas'=>$datas,'menu_anonymous'=>'active']);
+        return view('frontend.root.topics')->with(['getType'=>'items','topics'=>$datas,'menu_anonymous'=>'active']);
     }
 
 
@@ -177,7 +176,6 @@ class RootRepository {
         $topic_decode = decode($topic_encode);
         if(!$topic_decode) return view('frontend.404');
 
-
         if(Auth::check())
         {
             $user = Auth::user();
@@ -197,13 +195,17 @@ class RootRepository {
             ])->find($topic_decode);
         }
 
+        $topic->timestamps = false;
+        $topic->increment('visit_num');
+
         $communications = Communication::with(['user'])->where('topic_id',$topic_decode)
             ->orderBy('id','desc')->paginate(20);
 
         $topic->encode_id = encode($topic->id);
         $topic->user->encode_id = encode($topic->user->id);
+        $topics[0] = $topic;
 
-        return view('frontend.root.topic')->with(['getType'=>'item','data'=>$topic,'communications'=>$communications]);
+        return view('frontend.root.topic')->with(['getType'=>'item','data'=>$topic,'topics'=>$topics,'communications'=>$communications]);
     }
 
 
@@ -242,6 +244,7 @@ class RootRepository {
                     $user = Auth::user();
                     $user->collections()->attach($topic_decode,['type'=>1,'created_at'=>$time,'updated_at'=>$time]);
 
+                    $topic->timestamps = false;
                     $topic->increment('collect_num');
 
                     $return = [];
@@ -364,6 +367,7 @@ class RootRepository {
                     $user = Auth::user();
                     $user->pivot_topics()->attach($topic_decode,['type'=>1,'created_at'=>$time,'updated_at'=>$time]);
 
+                    $topic->timestamps = false;
                     $topic->increment('favor_num');
 
                     // 记录 insert.communication

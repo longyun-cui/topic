@@ -121,7 +121,7 @@ desired effect
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation" style="margin-left:0;background-color:#1a2226;">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" style="display:none;">
+            <a href="#" class="sidebar-toggle visible-xs" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
 
@@ -129,7 +129,7 @@ desired effect
                     <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon_transparent.png" class="img-icon" alt="Image"> <b>话题社</b></a></span>
             </div>
 
-            <div class="navbar-custom-menu" style="float:left;">
+            <div class="navbar-custom-menu visible-sm" style="display:none;float:left;">
                 <ul class="nav navbar-nav">
 
                     <li><a href="{{url('/')}}"> 首页</a></li>
@@ -151,8 +151,16 @@ desired effect
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
 
+                    <li class="visible-sm" style="display:none;">
+                        @if(!Auth::check())
+                            <a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span>登录</span></a>
+                            <a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span>注册</span></a>
+                        @else
+                            <a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span>返回后台</span></a>
+                        @endif
+                    </li>
 
-                    <li class="dropdown notifications-menu">
+                    <li class="dropdown notifications-menu visible-xs">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-home"></i>
                             {{--<span class="label label-warning">10</span>--}}
@@ -187,12 +195,10 @@ desired effect
 
 
     {{--<!-- Left side column. contains the logo and sidebar -->--}}
-    <aside class="main-sidebar" style="display:none;">
+    <aside class="main-sidebar visible-xs">
 
         {{--<!-- sidebar: style can be found in sidebar.less -->--}}
         <section class="sidebar">
-
-
 
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
@@ -200,7 +206,7 @@ desired effect
                 <li class="header">目录</li>
 
                 <li class="treeview {{ $menu_all or '' }}">
-                    <a href="{{url('/')}}"><i class="fa fa-list text-blue"></i> <span>全部</span></a>
+                    <a href="{{url('/')}}"><i class="fa fa-list text-orange"></i> <span>平台首页</span></a>
                 </li>
 
                 <li class="treeview {{ $menu_debates or '' }}">
@@ -208,7 +214,7 @@ desired effect
                 </li>
 
                 <li class="treeview {{ $menu_anonymous or '' }}">
-                    <a href="{{url('/anonymous')}}"><i class="fa fa-list text-grey"></i> <span>匿名话题</span></a>
+                    <a href="{{url('/anonymous')}}"><i class="fa fa-list text-orange"></i> <span>匿名话题</span></a>
                 </li>
 
                 <li class="header">Home</li>
@@ -227,10 +233,9 @@ desired effect
                     </li>
                 @endif
 
-
-
             </ul>
             <!-- /.sidebar-menu -->
+
         </section>
         {{--<!-- /.sidebar -->--}}
     </aside>
@@ -238,7 +243,7 @@ desired effect
 
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="margin-left:0;background:url('/bg.gif') repeat;">
+    <div class="content-wrapper" style="margin-left:0;background:url(/bg.gif) repeat;">
         <!-- Content Header (Page header) -->
         <section class="content-header" style="display:none;">
             <h1>
@@ -259,7 +264,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     {{--<!-- Main Footer -->--}}
-    <footer class="main-footer" style="display:none;">
+    <footer class="main-footer" style="margin-left:0;">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
             Anything you want

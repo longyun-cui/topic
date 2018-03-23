@@ -4,7 +4,7 @@
 @section('header') {{ $data->title or '' }} @endsection
 @section('description','')
 
-@section('header_title') {{ $data->title or '' }} @endsection
+@section('header_title')  @endsection
 
 @section('content')
 
@@ -12,7 +12,18 @@
         <input type="hidden" id="" value="{{$encode or ''}}" readonly>
     </div>
 
-    @include('frontend.component.topic')
+    <div class="container">
+
+        <div class="col-sm-12 col-md-9 container-body-left">
+
+            @include('frontend.component.topic')
+
+        </div>
+
+        <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
+
+        </div>
+    </div>
 
 @endsection
 
