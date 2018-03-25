@@ -141,7 +141,7 @@ class RootRepository {
         $user_decode = decode($user_encode);
         if(!$user_decode) return view('frontend.404');
 
-        $user = User::find($user_decode);
+        $user = User::withCount('topics')->find($user_decode);
 
         if(Auth::check())
         {
@@ -163,6 +163,9 @@ class RootRepository {
             ])->where(['user_id'=>$user_decode,'active'=>1,'is_anonymous'=>0])
                 ->orderBy('id','desc')->paginate(20);
         }
+
+        $user->timestamps = false;
+        $user->increment('visit_num');
 
         return view('frontend.root.user')->with(['getType'=>'items','data'=>$user,'topics'=>$datas]);
     }
@@ -200,6 +203,10 @@ class RootRepository {
 
         $communications = Communication::with(['user'])->where('topic_id',$topic_decode)
             ->orderBy('id','desc')->paginate(20);
+
+        $author = User::find($topic->user_id);
+        $author->timestamps = false;
+        $author->increment('visit_num');
 
         $topic->encode_id = encode($topic->id);
         $topic->user->encode_id = encode($topic->user->id);

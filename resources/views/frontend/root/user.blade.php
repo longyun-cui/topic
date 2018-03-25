@@ -14,10 +14,28 @@
 
     <div class="container">
 
-        <div class="col-sm-12 col-md-9 container-body-left">
+        <div class="col-xs-12 col-sm-12 col-md-3 container-body-right pull-right hidden-xs hidden-sm" style="margin-bottom:16px;">
 
-            <div class="box-body  visible-xs" style="margin-bottom:16px;background:#fff;">
-                <b>{{ $data->name or '' }}的主页</b>
+            <div class="box-body" style="background:#fff;">
+                <i class="fa fa-user text-orange"></i>&nbsp; <b>{{ $data->name or '' }}</b>
+            </div>
+
+            <div class="box-body" style="margin-top:8px;background:#fff;">
+                <div class="margin">话题数：{{ $data->topics_count or 0 }}</div>
+                <div class="margin">访问量：{{ $data->visit_num or 0 }}</div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-9 container-body-left">
+
+            <div class="box-body visible-xs visible-sm" style="margin-bottom:4px;background:#fff;">
+                <i class="fa fa-user text-orange"></i>&nbsp; <b>{{ $data->name or '' }}</b>
+            </div>
+
+            <div class="box-body visible-xs visible-sm" style="margin-bottom:16px;background:#fff;">
+                <div class="margin">话题数：{{ $data->topics_count or 0 }}</div>
+                <div class="margin">访问量：{{ $data->visit_num or 0 }}</div>
             </div>
 
             {{--@foreach($topics as $num => $item)--}}
@@ -26,14 +44,6 @@
             @include('frontend.component.topic')
 
             {{ $topics->links() }}
-
-        </div>
-
-        <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
-
-            <div class="box-body" style="background:#fff;">
-                <b>{{ $data->name or '' }}</b> 的话题
-            </div>
 
         </div>
 

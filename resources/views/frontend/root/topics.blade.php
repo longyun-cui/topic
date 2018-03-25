@@ -63,7 +63,7 @@
                 @else
                     <a href="{{url('/home')}}">
                         <div class="box-body">
-                            <i class="fa fa-home text-blue"></i> <span>&nbsp; 返回后台</span>
+                            <i class="fa fa-home text-blue"></i> <span>&nbsp; 返回我的后台</span>
                         </div>
                     </a>
                 @endif

@@ -8,7 +8,7 @@
 
 .container {width:1010px;padding-left:0;padding-right:0;}
 .container-body-left {padding-left:0;}
-.container-body-right {padding-left:0;padding-right:0;}
+.container-body-right {padding-left:0;}
 
 .container-body-right .box-body {color:#888;}
 .container-body-right .box-body:hover {background:#eee;}

@@ -159,12 +159,12 @@ desired effect
                             <a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span> 注册</span></a>
                         </li>
                     @else
-                        <li class="visible-sm" style="display:none;">
-                            <a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span> 返回后台</span></a>
+                        <li class="visible-sm visible-xs" style="display:none;">
+                            <a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span> {{Auth::user()->name}}</span></a>
                         </li>
                     @endif
 
-                    <li class="dropdown notifications-menu visible-xs">
+                    <li class="dropdown notifications-menu" style="display:none;">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-home"></i>
                             {{--<span class="label label-warning">10</span>--}}
@@ -175,10 +175,10 @@ desired effect
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     @if(!Auth::check())
-                                        <li><a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span>登录</span></a></li>
-                                        <li><a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span>注册</span></a></li>
+                                        <li><a href="{{url('/login')}}"><i class="fa fa-circle-o"></i> <span> 登录</span></a></li>
+                                        <li><a href="{{url('/register')}}"><i class="fa fa-circle-o"></i> <span> 注册</span></a></li>
                                     @else
-                                        <li><a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span>返回后台</span></a></li>
+                                        <li><a href="{{url('/home')}}"><i class="fa fa-home text-default"></i> <span> {{Auth::user()->name}}</span></a></li>
                                     @endif
                                 </ul>
                             </li>
