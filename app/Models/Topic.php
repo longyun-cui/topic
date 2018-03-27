@@ -16,7 +16,7 @@ class Topic extends Model
 
     public function getDates()
     {
-        return array('created_at');
+        return array('created_at','updated_at');
 //        return array(); // 原形返回；
     }
 
